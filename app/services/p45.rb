@@ -1,12 +1,16 @@
 class P45
   include HTTParty
   base_uri 'battle.platform45.com'
-
+  debug_output $stdout
   attr_reader :response, :id
 
   def initialize(args)
-    regis = self.register(args)
-    @id = regis["id"].to_i
+    if args[:id]
+      @id = args[:id]
+    else
+      regis = self.register(args)
+      @id = regis["id"].to_i
+    end
   end
 
   def register(args)
