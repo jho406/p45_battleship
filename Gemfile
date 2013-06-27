@@ -22,10 +22,16 @@ group :assets do
 end
 
 gem 'jquery-rails'
+gem 'rabl'
+gem 'oj'
 
 group :test, :development do
   gem 'rspec-rails'
   gem 'rspec-mocks'
+end
+
+group :development do
+  gem "better_errors"
 end
 
 gem 'httparty'
