@@ -11,3 +11,14 @@
  *= require_self
  *= require_tree .
  */
+
+.cell {
+  background: #ccc;
+  width: 20px;
+  height: 20px;
+  float: left;
+}
+
+.c0 {
+  clear:left;
+}

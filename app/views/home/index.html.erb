@@ -1,0 +1,19 @@
+
+<%= form_for @game do |f| %>
+  <%= f.email_field :email %>
+  <%= f.text_field :full_name %>
+  <!-- todo htmlsafe -->
+<!-- the other alter is to sync model /build form it on submit/ but i think this is nicer since i have default on no js BUT how to handle arrays.. i can preprocess it on backbone-->
+  <div id="placement-board">
+    <%Battleship.cell_count.times do|n|%>
+      <%rc = Battleship.pos_to_coord(n)%>
+      <div class="cell pos<%=n%> r<%=rc[:x]%> c<%=rc[:y]%>"></div>
+    <%end%>
+  </div>
+
+  <%=f.submit%>
+<% end %>
+
+<ul id="aresenal">
+
+</ul>
