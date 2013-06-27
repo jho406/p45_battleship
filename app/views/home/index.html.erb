@@ -1,3 +1,10 @@
+<script>
+  $(function(){
+    app.ships.reset(<%=raw(
+      render :template  => 'ships/index',
+             :object    =>  @ships)%>);
+  });
+</script>
 
 <%= form_for @game do |f| %>
   <%= f.email_field :email %>
