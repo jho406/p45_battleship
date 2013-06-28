@@ -1,26 +1,30 @@
 app.Views.GameFormView = Backbone.View.extend({
   el:'#new_game',
   initialize: function(){
-
+    this.model = app.game = new app.Models.Game;
+    this.listenTo(this.model, 'invalid', this.showErrors);
   },
   events:{
     'submit':'start'
   },
   start: function(e){
     e.preventDefault();
-    var game_attr = {
+    var game_attrs = {
       full_name: this.$el.find('#game_full_name').val(),
       email: this.$el.find('#game_email').val()
     };
 
-    game_attr.deployments_attributes = app.ships.map(function(ship){
+    game_attrs.deployments_attributes = app.ships.map(function(ship){
       var data = ship.toJSON();
       data.ship_id = data.id;
       data = _.omit(data,'name', 'id', 'length');
       return data;
     });
 
-    app.game = new app.Models.Game(game_attr);
-    app.game.save();
+    this.model.set(game_attrs);
+    this.model.save();
+  },
+  showErrors: function(model, error){
+    console.log(error);
   }
 });
