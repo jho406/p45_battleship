@@ -1,13 +1,13 @@
 module Battleship
   BOARD_SIZE = 10
   SHIPS = [
-    {:name=>"Carrier", :length=>5},
+    {:name=>"Carrier",    :length=>5},
     {:name=>"Battleship", :length=>4},
-    {:name=>"Destroyer", :length=>3},
-    {:name=>"Submarine", :length=>2},
-    {:name=>"Patrol Boat", :length=>1},
-    {:name=>"Submarine", :length=>2},
-    {:name=>"Patrol Boat", :length=>1}
+    {:name=>"Destroyer",  :length=>3},
+    {:name=>"Submarine",  :length=>2},
+    {:name=>"Patrol Boat",:length=>1},
+    {:name=>"Submarine",  :length=>2},
+    {:name=>"Patrol Boat",:length=>1}
   ]
 
   STEP = {:horizontal => 1, :vertical=>10}
