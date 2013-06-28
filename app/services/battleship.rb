@@ -83,8 +83,7 @@ module Battleship
     step = STEP[orientation]
 
     if pos+(length-1)*step > BOARD_SIZE**2 ||
-      orientation == :horizontal && pos+length > BOARD_SIZE
-
+      orientation == :horizontal && (pos%10)+length > BOARD_SIZE
       raise ArgumentError, "pos and length out of range"
     end
 
