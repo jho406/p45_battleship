@@ -1,4 +1,6 @@
+require 'set'
 module Battleship
+  ##todo, play in rake
   BOARD_SIZE = 10
   SHIPS = [
     {:name=>"Carrier",    :length=>5},
@@ -29,23 +31,33 @@ module Battleship
 
   def start(args)
     email                 = args[:email]
-    name                  = args[:name]
+    name                  = args[:full_name]
     model                 = args[:model]
-    deployment_attributes = args[:deployment_attributes]
-
-    api = P45.new({:email => email, :name => name})
-
+    deployments_attributes = args[:deployments_attributes]
     game = model.new(
       :email => email,
       :full_name => name,
+      :deployments_attributes => deployments_attributes
+    )
+
+    game.valid?
+    # debugger
+    return game if game.errors.keys.to_set != [:p45_id, :turns, :p45_response].to_set
+##todo: module include in model, it has to know something about turn and game...
+## have it be included in both models rather than depending on dependancy injection...
+    api = P45.new({:email => email, :name => name})
+    #p45 to hash
+    game.assign_attributes({
       :p45_id=>api.id,
       :p45_response => api.response,
-      :deployment_attributes => deployment_attributes,
-      :turn_attributes => {
-        :p45_response => api.response,
-        :position => transform_coord(api.response)
-      }
-    )
+      :turns_attributes => [{
+        :p45_response => api.response.to_s,
+        :position => coord_to_pos(transform_coord(api.response))
+      }]
+    })
+    game.valid?
+
+    return game
   end
 
   def nuke!(game, index)
