@@ -18,6 +18,10 @@ module Battleship
     model.create(SHIPS)
   end
 
+  def cell_count
+    BOARD_SIZE**2
+  end
+
   def ship_ids
     #todo: implement rails cache
     Ship.pluck(:id)
