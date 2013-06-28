@@ -44,13 +44,15 @@ module Battleship
     )
   end
 
-  def nuke(game, index)
+  def nuke!(game, index)
     api = P45.new(:id=>game.id)
 
     api.nuke(pos_to_coord(index))
+    game.turn.create!(:position=>index)
+
     coord = transform_coord(api.response)
     index = coord_to_pos(coord)
-    game.turn.create(:position=>index)
+    game.turn.create!(:position=>index)
   end
 
   def coord_to_pos(coord)
