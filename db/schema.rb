@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130623215017) do
+ActiveRecord::Schema.define(:version => 20130628221804) do
 
   create_table "deployments", :force => true do |t|
     t.integer  "ship_id",     :null => false
@@ -41,11 +41,10 @@ ActiveRecord::Schema.define(:version => 20130623215017) do
   end
 
   create_table "turns", :force => true do |t|
-    t.integer  "game_id",      :null => false
-    t.integer  "position",     :null => false
-    t.text     "p45_response", :null => false
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.integer  "game_id",                       :null => false
+    t.integer  "position",                      :null => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
   end
 
 end

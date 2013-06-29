@@ -1,7 +1,7 @@
 class Turn < ActiveRecord::Base
   belongs_to :game
 
-  attr_accessible :p45_response, :position
+  attr_accessible :position, :attacked
 
-  validates :p45_response, :position, :presence => true
+  validates :position, :presence => true
 end

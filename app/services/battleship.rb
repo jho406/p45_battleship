@@ -49,9 +49,7 @@ module Battleship
     #p45 to hash
     game.assign_attributes({
       :p45_id=>api.id,
-      :p45_response => api.response,
       :turns_attributes => [{
-        :p45_response => api.response.to_s,
         :position => coord_to_pos(transform_coord(api.response))
       }]
     })
