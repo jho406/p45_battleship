@@ -24,7 +24,8 @@ app.Models.Ship = Backbone.Model.extend({
   },
   toJSON: function(){
     var json = _.clone(this.attributes);
-    json.positions = [this.positions()[0]];
+    var first = this.positions()[0];
+    json.positions = first ? [first] : [];
     return json;
   }
 });
