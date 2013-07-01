@@ -1,0 +1,22 @@
+<script>
+$(function(){
+  app.game = new app.Models.Game({id: <%=@game.id%>});
+
+  app.attackBoardView = new app.Views.AttackBoardView({
+    collection: app.game.turns
+  });
+
+  app.statusBoardView = new app.Views.StatusBoardView({
+    collection: app.game.turns
+  });
+
+  app.game.turns.fetch();//change to reset
+});
+</script>
+<div id='container'>
+  <div id="attack-board">
+  </div>
+
+  <div id="status-board">
+  </div>
+</div>

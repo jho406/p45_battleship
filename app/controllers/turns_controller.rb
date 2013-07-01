@@ -1,6 +1,8 @@
 class TurnsController < ApplicationController
+
   def index
     @turns = current_game.turns
+    @game = current_game
   end
 
   def create

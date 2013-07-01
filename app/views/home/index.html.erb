@@ -1,11 +1,20 @@
-<script>
-  $(function(){
-    app.ships.reset(<%=raw(
-      render :template  => 'ships/index',
-             :object    =>  @ships)%>);
+<script type="text/javascript">
+$(function(){
+  app.ships = new app.Collections.ShipCollection;
+  app.board = new app.Views.PlacementBoardView({
+    collection: new app.Collections.CellCollection
   });
+  app.gameFormView = new app.Views.GameFormView;
+  app.aresenalView = new app.Views.AresenalView({collection: app.ships});
+
+  app.ships.reset(<%=raw(
+  render :template  => 'ships/index',
+         :object    =>  Ship.all)%>);
+
+});
 </script>
 
+<div id="container">
 <%= form_for @game do |f| %>
   <%= f.email_field :email %>
   <%= f.text_field :full_name %>
@@ -24,3 +33,5 @@
 <ul id="aresenal">
 
 </ul>
+
+</div>

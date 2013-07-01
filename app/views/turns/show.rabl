@@ -1,0 +1,1 @@
+attributes :position, :attacked, :status
