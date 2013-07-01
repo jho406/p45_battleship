@@ -22,7 +22,12 @@ app.Views.GameFormView = Backbone.View.extend({
     });
 
     this.model.set(game_attrs);
-    this.model.save();
+    this.model.save([], {success:this.openPlay});
+  },
+  openPlay: function(model, body, options){
+    var resource = options.xhr.getResponseHeader('location');
+    //todo: refactor the below.
+    window.location = resource;
   },
   showErrors: function(model, error){
     console.log(error);
