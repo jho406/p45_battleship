@@ -19,6 +19,11 @@
   float: left;
 }
 
-.c0 {
-  clear:left;
+#attack-board, #status-board, #placement-board {
+  width: 200px;
+  height: 200px;
+}
+
+#attack-board .cell{
+  background: #3498db;
 }
