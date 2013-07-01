@@ -6,12 +6,12 @@ class Game < ActiveRecord::Base
   has_many :ships, :through => :deployments
 
   attr_accessible :email, :full_name,
-    :p45_id, :p45_response,
+    :p45_id,
     :deployments_attributes, :turns_attributes
 
   accepts_nested_attributes_for :deployments, :turns
 
-  validates :email, :full_name, :p45_id, :p45_response, :presence => true
+  validates :email, :full_name, :p45_id, :presence => true
   validates :email,
     :format => { :with=> /\A[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]+\z/ }
 
@@ -24,8 +24,30 @@ class Game < ActiveRecord::Base
 
   validate :ships_must_exist_and_be_unique, :positions_must_not_collide
 
+  before_create :set_initial_lives_counter
+  def over?
+    self.over
+  end
+
+  def lose!
+    self.update_attribute(:won, false)
+  end
+
+  def win!
+    self.update_attribute(:won, true)
+  end
+
+  def decrement_life_cache
+    return if self.over?
+    self.decrement!(:lives)
+    self.update_attribute(:over, true) if self.lives <=0
+  end
+
   private
 
+  def set_initial_lives_counter
+    self.lives = Ship.sum(:length)
+  end
 
   def ships_must_exist_and_be_unique
     id_set = self.deployments.map(&:ship_id).to_set

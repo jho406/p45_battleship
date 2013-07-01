@@ -9,6 +9,16 @@ class Deployment < ActiveRecord::Base
 
   validates :ship_id, :orientation, :positions, :presence => true
 
+  def damage!
+    self.decrement!(:lives)
+    # self.update_attribute(:status, "hit")
+    self.game.decrement_life_cache
+  end
+
+  def self.lock_on(position)
+    where.any(:positions=>position).first
+  end
+
   private
 
   def add_lives
