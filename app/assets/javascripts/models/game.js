@@ -3,7 +3,7 @@ app.Models.Game = Backbone.Model.extend({
   paramRoot: 'game',
   initialize: function(){
     this.turns = new app.Collections.TurnCollection;
-    this.turns.url = '/game/' + this.id + '/turns';
+    this.turns.url = '/games/' + this.id + '/turns';
 
     this.deployments = new app.Collections.DeploymentCollection;
     this.deployments.url = '/game/' + this.id + '/deployments';
