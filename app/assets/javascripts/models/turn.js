@@ -1,1 +1,3 @@
-app.Models.Turn = Backbone.Model.extend({});
+app.Models.Turn = Backbone.Model.extend({
+  paramRoot: 'turn'
+});
