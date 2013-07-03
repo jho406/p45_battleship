@@ -1,5 +1,5 @@
-require 'set'
 module Battleship
+  attr_accessor :game_platform
   ##todo, play in rake
   BOARD_SIZE = 10
   SHIPS = [
@@ -29,61 +29,43 @@ module Battleship
     Ship.pluck(:id)
   end
 
-  def start(args)
-    email                 = args[:email]
-    name                  = args[:full_name]
-    model                 = args[:model]
-    deployments_attributes = args[:deployments_attributes]
-    game = model.new(
-      :email => email,
-      :full_name => name,
-      :deployments_attributes => deployments_attributes
-    )
-
-    game.valid?
-    # debugger
-    return game if game.errors.keys.to_set != [:p45_id, :turns].to_set
-##todo: module include in model, it has to know something about turn and game...
-## have it be included in both models rather than depending on dependancy injection...
-    api = P45.new({:email => email, :name => name})
-    #p45 to hash
-    game.assign_attributes({
-      :p45_id=>api.id,
-      :turns_attributes => [{
-        :position => coord_to_pos(transform_coord(api.response))
-      }]
-    })
-    game.valid?
+  def start(game)
+    # just deal with reducing dependacies on this fornow redo controllerts to Game.start
+    #maybe move half to the Game class???
+    return game if game.p45_id
+  ##todo: module include in model, it has to know something about turn and game...
+  ## have it be included in both models rather than depending on dependancy injection...
+    api = game_platform.new({:email => game.email, :name => game.full_name})
+    api.register
+    game.p45_id = api.id
+    game.turns.new({:position => coord_to_pos(api.counter_nuke)})
 
     return game
   end
 
-  def nuke!(args)
-    game = args[:game]
-    index = args[:position]
-
+  def nuke!(game, index)
     return game if game.over?
-    api = P45.new(:id => game.p45_id)
+    api = game_platform.new(:id => game.p45_id)
 
     api.nuke(pos_to_coord(index))
-    game.turns.create!(:position=>index, :status=> api.response['status'], :attacked=>true)
+    game.turns.create!(:position=>index, :status=> api.status, :attacked=>true)
     #which creates a turn hit/miss # todo, add a transformer
 
     #check if i won, aka if its game over for them but not us
-    if api.response['status'] == 'over'
+    if api.status == 'lost'
       game.win!
       return game
     end
 
     #i didn't win yet, i also receive a hit
     #todo: eager load assoications via the controller
-    index = coord_to_pos(transform_coord(api.response))
-    recieve_nuke!(game, index)
+    index = coord_to_pos(api.counter_nuke)
+    receive_nuke!(game, index)
 
     return game
   end
 
-  def recieve_nuke!(game, index)
+  def receive_nuke!(game, index)
     locked_on_ship = game.deployments.lock_on(index)
     status = damage_and_report!(locked_on_ship)
     game.lose! if game.over?
@@ -115,17 +97,13 @@ module Battleship
     {:x => coord[0], :y => coord[1]}
   end
 
-  def transform_coord(resp)
-    resp = resp.to_options
-    {:x => resp[:x], :y => resp[:y]}
-  end
-
   def expand_pos(args)
     pos = args[:position]
     length = args[:length]
-    orientation = args[:orientation] || :horizontal
-    step = STEP[orientation]
+    orientation = args[:orientation].to_sym || :horizontal
 
+    step = STEP[orientation]
+    # debugger
     if pos+(length-1)*step > BOARD_SIZE**2 ||
       orientation == :horizontal && (pos%10)+length > BOARD_SIZE
       raise ArgumentError, "pos and length out of range"
@@ -135,16 +113,4 @@ module Battleship
       memo.push(memo.last + step)
     end
   end
-
-  # def collision?(ships)
-  #   if ship.length == 2
-  #     pos = []
-  #     while(ship = [ships[0], ships[1]].min_by{:first}) do
-  #       pos.push(ship.unshift)
-  #     end
-  #   end
-
-  #   collision?()
-  # end
-
 end

@@ -2,20 +2,34 @@ require 'spec_helper'
 
 describe Battleship do
   before(:each) do
-    api = double("P45")
-    api.stub(:response) do
-      {:id=>0, x: 0, y: 0}
-    end
-    api.stub(:id) do
-      0
-    end
-    api.stub(:nuke)
-
-    stub_const('Battleship::P45', double())
-    Battleship::P45.stub('new'){api}
+    Battleship.game_platform = double("P45", :new => api)
   end
 
-  context '#seed' do
+  let('turns'){
+    double('turns', :'new'=>{})
+  }
+
+  let('game'){
+    double("game",
+      :p45_id => nil,##todo lose dependancy
+      :prepared?  => true,
+      :email => 'foo@foo.com',
+      :full_name => 'foo',
+      :turns => turns,
+      :over? => false,
+      :lose! => nil)
+  }
+
+  let('api'){
+    double("api",
+      :register=>{},
+      :id=>0,
+      :counter_nuke=>{:x=>0, :y=>0},
+      :nuke=>{},
+      :status=>'hit')
+  }
+
+  context '.seed' do
     it 'should populate the the appropriate model' do
       model = double('game')
       model.should_receive(:create).with(Battleship::SHIPS)
@@ -23,49 +37,70 @@ describe Battleship do
     end
   end
 
-  context '#ship_ids' do
+  context '.cell_count' do
+    it 'should return the total number of cells' do
+      Battleship.cell_count.should eql(Battleship::BOARD_SIZE**2)
+    end
+  end
+
+  context '.ship_ids' do
     it 'should return a list of current ids' do
       pending 'its just one line...'
     end
   end
 
-  context '#start' do
+  context '.start' do
     it 'should call register a new game with the service and return a valid game' do
-      game = double("Game")
-      game.stub(:new){"started"}
+      # game.should_receive(:assign_attributes)
+      game.should_receive(:p45_id=)
+      api.should_receive(:register)
+      api.should_receive(:counter_nuke)
 
-      args = {
-        :email=>"test@test.com",
-        :name=> "test",
-        :model=> game,
-        :deployment_attributes=>[
-          {:ship_id=>1, :position=>0,  :orientation=>"horizontal"},
-          {:ship_id=>2, :position=>10, :orientation=>"horizontal"}
-        ]
-      }
+      Battleship.start(game).should eql(game)
+    end
 
-      game.should_receive(:new)
-      Battleship::P45.should_receive(:new)
-      Battleship.start(args).should == "started"
+    xit 'should not call register if the game is not prepared' do
     end
   end
 
-  context '#nuke' do
-    it 'should nuke via P45 and create a turn' do
-      game = double("Game")
-      turn = double("Turn")
-      turn.stub('create')
-      game.stub('turn') {turn}
-      game.stub('id') {0}
+  context '.nuke!' do
+    it 'should nuke via the platform api and create a turn' do
+      turns.should_receive(:create!)
+      Battleship.should_receive(:receive_nuke!)
 
-      turn.should_receive(:create)
-      Battleship.nuke(game, 0)
+      Battleship.nuke!(game, 0).should eql(game)
+    end
+    xit 'should not call nuke if game is over' do
     end
   end
 
-  context '#coord_to_pos' do
+  context '.recieve_nuke!' do
+    it 'should nuke a deployed ship and create a turn' do
+      game.stub_chain(:deployments, :lock_on).and_return({})
+      Battleship.should_receive(:damage_and_report!)
+      turns.should_receive(:create!)
+
+      Battleship.receive_nuke!(game, 0)
+    end
+  end
+
+  context '.damage_and_report!' do
+    it 'should damage! return "hit" if a ship was passed' do
+      ship = double('ship')
+      ship.should_receive(:damage!)
+      Battleship.damage_and_report!(ship).should eql('hit')
+    end
+
+    it 'should not damage! and return "miss" if falsy was passed' do
+      ship = false
+      ship.should_not_receive(:damage!)
+      Battleship.damage_and_report!(ship).should eql('miss')
+    end
+  end
+
+  context '.coord_to_pos' do
     it 'should convert a hash of coords into a index' do
-      Battleship.coord_to_pos({:x=>1, :y=>2}).should eq(12)
+      Battleship.coord_to_pos({:x=>1, :y=>2}).should eq(21)
     end
 
     it 'should throw an error if the coord is beyond the limits of the boardsize' do
@@ -73,7 +108,7 @@ describe Battleship do
     end
   end
 
-  context '#pos_to_coord' do
+  context '.pos_to_coord' do
     it 'should convert an index into a hash of coordinates' do
       Battleship.pos_to_coord(99).should eql({:x=>9, :y=>9})
     end
@@ -83,15 +118,7 @@ describe Battleship do
     end
   end
 
-  context '#transform_coord' do
-    it 'should extract coordinates from a response' do
-      coord = {:x=>1, :y=>2}
-      response = {:foo=>'bar'}.merge(coord)
-      Battleship.transform_coord(response).should eql(coord)
-    end
-  end
-
-  context '#expand_pos' do
+  context '.expand_pos' do
     it 'should translate a ship into its occupying indexes' do
       positions = Battleship.expand_pos(
         :position => 0,
