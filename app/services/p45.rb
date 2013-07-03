@@ -8,17 +8,45 @@ class P45
     if args[:id]
       @id = args[:id]
     else
-      regis = self.register(args)
-      @id = regis["id"].to_i
+      @email = args[:email]
+      @name = args[:name]
     end
   end
 
-  def register(args)
-    @response = self.class.post('/register', {:body=>args.to_json}).parsed_response
+  def register
+    @response = self.class.post('/register',
+      {:body=>
+        {:email=>@email, :name=>@name}.to_json
+      }
+    ).parsed_response
+
+    raise HTTParty::ResponseError, "error returned" if @response['error']
+    @id = self.response["id"].to_i
+    return self
   end
 
   def nuke(coord)
+    return nil unless self.id
     data = ({:id=>self.id}.merge(coord)).to_json
     @response = self.class.post('/nuke', {:body=>data}).parsed_response
+    raise HTTParty::ResponseError, "error returned" if @response['error']
+    return self
   end
+
+  def counter_nuke
+    return nil unless @response
+    # resp = @response
+    {:x => @response['x'], :y => @response['y']}
+  end
+
+  def status
+    return nil unless @response
+    @response['game_status'] || @response['status'] || nil
+  end
+
+  def prize
+    return nil unless @response
+    @response['prize']
+  end
+
 end

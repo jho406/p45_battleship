@@ -25,13 +25,18 @@ gem 'jquery-rails'
 gem 'rabl'
 gem 'oj'
 
-group :test, :development do
+group :test do
   gem 'rspec-rails'
   gem 'rspec-mocks'
+  gem 'vcr'
+  gem 'webmock'
+  gem 'shoulda-matchers'
+  gem 'factory_girl_rails'
 end
 
 group :development do
   gem "better_errors"
+  gem 'rspec-rails'
 end
 
 gem 'httparty'
