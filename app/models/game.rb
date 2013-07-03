@@ -25,6 +25,7 @@ class Game < ActiveRecord::Base
   validate :ships_must_exist_and_be_unique, :positions_must_not_collide
 
   before_create :set_initial_lives_counter
+
   def over?
     self.over
   end
@@ -38,6 +39,7 @@ class Game < ActiveRecord::Base
   end
 
   def decrement_life_cache
+    #todo rename to decrement_life_cache!
     return if self.over?
     self.decrement!(:lives)
     self.update_attribute(:over, true) if self.lives <=0
@@ -59,10 +61,11 @@ class Game < ActiveRecord::Base
 
   def positions_must_not_collide
     all_positions = deployments.inject([]) do |memo, ship|
-      # ship.expand_positions
+      ship.reset_positions
       memo += ship.positions
     end
 
+    #todo: extract and give to battleship
     collision = !all_positions.group_by { |pos| pos }.select { |k, v| v.size > 1 }.empty?
     errors.add(:deployment_positions, "ships overlap") if collision
   end

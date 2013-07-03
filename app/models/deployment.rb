@@ -1,22 +1,29 @@
 class Deployment < ActiveRecord::Base
   belongs_to :game
   belongs_to :ship
-  #todo: why do i need orientation?
-  attr_accessible :ship_id, :orientation, :positions
+  attr_accessible :ship_id, :orientation, :positions, :lives
 
-  before_save :add_lives
-  before_validation :expand_positions
+  before_create :add_lives
 
   validates :ship_id, :orientation, :positions, :presence => true
+  validate :all_positions_are_fixnum
+
+  def self.lock_on(position)
+    where.any(:positions=>position).limit(1).first
+  end
 
   def damage!
     self.decrement!(:lives)
-    # self.update_attribute(:status, "hit")
     self.game.decrement_life_cache
   end
 
-  def self.lock_on(position)
-    where.any(:positions=>position).first
+  def reset_positions
+    # debugger
+    self.positions = Battleship.expand_pos(
+      :position => self.positions.first,
+      :length    => self.ship.length, #extra query here..
+      :orientation => self.orientation
+    )
   end
 
   private
@@ -25,11 +32,9 @@ class Deployment < ActiveRecord::Base
     self.lives = self.ship.length
   end
 
-  def expand_positions
-    self.positions = Battleship.expand_pos(
-      :position => self.positions.first,
-      :length    => self.ship.length #extra query here..
-    )
+  def all_positions_are_fixnum
+    return if self.positions.to_a.all? {|i| i.is_a? Fixnum }
+    errors.add(:positions, 'all positions must be a number')
   end
 
 end
