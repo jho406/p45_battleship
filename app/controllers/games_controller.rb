@@ -1,7 +1,9 @@
 class GamesController < ApplicationController
   def create
-    game = Battleship.start(params[:game].merge({:model=>Game}))
+    game = Game.new(params[:game])
+    Battleship.start(game)
     game.save!
+    #todo: rabl
     render :json=>game.to_json, :status => :created, :location => url_for(game)
   end
 

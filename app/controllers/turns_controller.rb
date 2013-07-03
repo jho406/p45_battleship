@@ -6,7 +6,7 @@ class TurnsController < ApplicationController
   end
 
   def create
-    Battleship.nuke!(params[:turn].merge(:game => current_game))
+    Battleship.nuke!(current_game, params[:turn][:position])
     #backbone expects a response in the body, since a turn get created
     #from the backend also, we have no need to return something
     #instead we have to ping index. todo: make this more efficient by returning
