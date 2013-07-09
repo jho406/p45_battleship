@@ -17,7 +17,7 @@ describe Game do
   it { should accept_nested_attributes_for(:deployments) }
 
   context 'before creating' do
-    let(:game){build :game}
+    let(:game){ build :game }
     it 'should validate ship_must_exist_and_be_unique' do
       game.should_receive(:ships_must_exist_and_be_unique)
       game.valid?
@@ -33,16 +33,16 @@ describe Game do
       game.save
     end
   end
-#todo: perhaps the p45id should nont be not null and turns...
+
   context '#over?' do
-    let(:game){build :game, :over=>true}
+    let(:game) { build :game, :over => true }
     it 'should just delegate to over' do
       game.over?.should eql(game.over)
     end
   end
 
   context '#win!' do
-    let(:game){create :game}
+    let(:game) { create :game }
     it 'should set won to true' do
       game.lose!
       expect{game.win!}.to change{game.won}.to(true)
@@ -50,7 +50,7 @@ describe Game do
   end
 
   context '#lose!' do
-    let(:game){create :game}
+    let(:game) { create :game }
     it 'should set won to false' do
       game.win!
       expect{game.lose!}.to change{game.won}.to(false)
@@ -60,17 +60,17 @@ describe Game do
   context '#decrement_life_cache' do
     it 'should decrement lives if game is not over' do
       game = create :game, :over=>false
-      expect{game.decrement_life_cache}.to change{game.lives}
+      expect{ game.decrement_life_cache }.to change{ game.lives }
     end
 
     it 'should not decrement lives if game is over' do
       game = create :game, :over=>true
-      expect{game.decrement_life_cache}.to_not change{game.lives}
+      expect{ game.decrement_life_cache }.to_not change{ game.lives }
     end
 
-    it 'should set over to false when the game if over' do
+    it 'should set over to false if game is over' do
       game = create :game
-      game.update_attribute(:lives, 0)
+      game.update_attribute(:lives, 1)
       game.decrement_life_cache
       game.over.should eql(true)
     end

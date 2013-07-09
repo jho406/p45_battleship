@@ -18,7 +18,6 @@ class Deployment < ActiveRecord::Base
   end
 
   def reset_positions
-    # debugger
     self.positions = Battleship.expand_pos(
       :position => self.positions.first,
       :length    => self.ship.length, #extra query here..

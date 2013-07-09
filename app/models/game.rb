@@ -31,11 +31,14 @@ class Game < ActiveRecord::Base
   end
 
   def lose!
+    #todo refactor
     self.update_attribute(:won, false)
+    self.update_attribute(:over, false)
   end
 
   def win!
     self.update_attribute(:won, true)
+    self.update_attribute(:over, true)
   end
 
   def decrement_life_cache

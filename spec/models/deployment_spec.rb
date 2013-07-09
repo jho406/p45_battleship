@@ -9,10 +9,10 @@ describe Deployment do
   it { should validate_presence_of :orientation }
   it { should validate_presence_of :positions }
 
-  context 'before saving' do
-    let(:game) {create :game}
-    let(:deployed) {game.deployments.first}
+  let(:game)     { create :game }
+  let(:deployed) { game.deployments.first }
 
+  context 'before saving' do
     it 'should add_lives' do
       deployed.stub_chain(:self, :ship, :length).and_return(10)
       deployed.should_receive(:add_lives)
@@ -21,9 +21,9 @@ describe Deployment do
   end
 
   context '#reset_positions' do
-    let!(:game) {create :game}
-    let!(:deployed) {game.deployments.first}
-    let(:battleship){double('battleship')}
+    let!(:game)      { create :game }
+    let!(:deployed)  { game.deployments.first }
+    let(:battleship) { double('battleship') }
 
     it 'should reset its positions array based off the first element ' do
       stub_const("Battleship", battleship)
@@ -33,18 +33,14 @@ describe Deployment do
   end
 
   context '#damage!' do
-    let(:game) {create :game}
-    let(:deployed) {game.deployments.first}
-
     it "should decrement lives and the cache to game" do
-      expect{deployed.damage!}.to change{deployed.lives}.by(-1)
-      expect{game.reload}.to change{game.lives}.by(-1)
+      expect{ deployed.damage! }.to change{ deployed.lives }.by(-1)
+      expect{ game.reload }.to change{ game.lives }.by(-1)
     end
   end
 
   context '.lock_on' do
-    let(:game) {create :game}
-    let(:deployments) {game.deployments}
+    let(:deployments) { game.deployments }
 
     it 'should return the first deployment at position' do
       deployments.lock_on(0).should eql(deployments.first)
