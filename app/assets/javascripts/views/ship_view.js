@@ -2,16 +2,26 @@ app.Views.ShipView = Backbone.View.extend({
   initialize: function(){
     //jquery UI
     this.$el.draggable({
-      snap: ".placement-cell",
+      snap: ".cell",
       snapMode: "inner",
-      snapTolerance: 25
+      snapTolerance: 50,
+      stop: function(){
+        $(this).addClass("stopped");
+      },
+      handle: ".handle"
     });
 
     this.$el.data('model', this.model);
+    this.listenTo(this.model, 'detached', this.render);
+    this.listenTo(this.model, 'attached', this.render);
+    this.render();
   },
   events:{
     'drag':'detach',
-    'click':'reorient'
+    'click .reorient': function(e){
+      e.preventDefault();
+      this.reorient();
+    }
   },
   detach: function(){
     if (!this.model.cells.at(0)) return;
@@ -22,11 +32,11 @@ app.Views.ShipView = Backbone.View.extend({
     //   cell.set('ship', null);
     // });
   },
-  reorient: function(e){
+  reorient: function(){
     var headCell = this.detach(); //to get headCell
     this.model.toggleOrientation();//set('orientation', 'bottom');
-    headCell.attach(this.model, 
-      this.model.get('length'), 
+    headCell.attach(this.model,
+      this.model.get('length'),
       this.model.get('orientation')); //change to options??
     //i need to call dropped after the detach,
     //come to thing of it, perhaps atttached and detach should be model
@@ -40,6 +50,12 @@ app.Views.ShipView = Backbone.View.extend({
     //1. simulate it
     //2. link the views, but its wierd.. now this view has
     // to know about the other... or we can encapsulate it somehow
-    //3. 
+    //3.
+  },
+  render: function(){
+    this.$el.removeClass('detached').removeClass('attached');
+    var css = 'detached';
+    if (this.model.cells.length>0) css = 'attached';
+    this.$el.addClass(css);
   }
 });

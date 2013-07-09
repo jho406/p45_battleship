@@ -30,6 +30,6 @@ app.Views.GameFormView = Backbone.View.extend({
     window.location = resource;
   },
   showErrors: function(model, error){
-    console.log(error);
+    this.$el.find('#notifications').html(error);
   }
 });

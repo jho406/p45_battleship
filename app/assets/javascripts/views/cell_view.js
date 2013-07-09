@@ -6,29 +6,13 @@ app.Views.CellView = Backbone.View.extend({
     this.listenTo(this.model, 'change', this.render);
   },
   events: {
-    "drop": 'attachDropped'
+    "drop": function(e, obj){
+      var item = obj.draggable.data('model');
+      this.attachDropped(item);
+    }
   },
-  attachDropped: function(e, obj){
-    item = obj.draggable.data('model')
-
-    var self = this;
-    // var cells = this.model.andAdjacentCells(
-    //   item.get('length'), item.get('orientation'));
+  attachDropped: function(item){
     this.model.attach(item, item.get('length'), item.get('orientation'));
-    //todo: might want to extract the collision detecting in its own method.
-    // var isCollision = !!_.find(cells, function(cell){
-    //   return !!cell.get("ship");
-    // });
-
-    // if (isCollision){
-    //   this.trigger('collided', this);
-    //   return false;
-    // }
-
-    // _.each(cells, function(cell){
-    //   item.cells.push(cell)
-    //   cell.set('ship', item);
-    // });
   },
   presenter: function(){
     var defaultPresenter = {};
