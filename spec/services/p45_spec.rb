@@ -54,8 +54,6 @@ describe P45 do
           api.nuke({:x=>0, :y=>0}).should == api
         end
       end
-
-      xit "when over..."
     end
 
     context "#counter_nuke" do
@@ -76,11 +74,22 @@ describe P45 do
       end
 
       it "should be nil when first registered" do
-        api.status.should == nil
+        api.status.should be_nil
       end
 
-      xit "it should return over when game over"
+      it "it should return lost when game over" do
+        VCR.use_cassette 'p45/last_nuke' do
+          api.nuke({:x=>0, :y=>0})
+        end
+        api.status.should eql('lost')
+      end
 
+      it "it should return lost when game over" do
+        VCR.use_cassette 'p45/last_nuke' do
+          api.nuke({:x=>0, :y=>0})
+        end
+        api.status.should eql('lost')
+      end
     end
 
   end

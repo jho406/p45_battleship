@@ -35,7 +35,7 @@ module Battleship
     return game if game.p45_id
   ##todo: module include in model, it has to know something about turn and game...
   ## have it be included in both models rather than depending on dependancy injection...
-    api = game_platform.new({:email => game.email, :name => game.full_name})
+    api = self.game_platform.new({:email => game.email, :name => game.full_name})
     api.register
     game.p45_id = api.id
     game.turns.new({:position => coord_to_pos(api.counter_nuke)})
@@ -48,7 +48,6 @@ module Battleship
     api = game_platform.new(:id => game.p45_id)
 
     api.nuke(pos_to_coord(index))
-    game.turns.create!(:position=>index, :status=> api.status, :attacked=>true)
     #which creates a turn hit/miss # todo, add a transformer
 
     #check if i won, aka if its game over for them but not us
@@ -56,6 +55,8 @@ module Battleship
       game.win!
       return game
     end
+
+    game.turns.create!(:position=>index, :status=> api.status, :attacked=>true)
 
     #i didn't win yet, i also receive a hit
     #todo: eager load assoications via the controller
@@ -103,7 +104,6 @@ module Battleship
     orientation = args[:orientation].to_sym || :horizontal
 
     step = STEP[orientation]
-    # debugger
     if pos+(length-1)*step > BOARD_SIZE**2 ||
       orientation == :horizontal && (pos%10)+length > BOARD_SIZE
       raise ArgumentError, "pos and length out of range"
@@ -113,4 +113,10 @@ module Battleship
       memo.push(memo.last + step)
     end
   end
+end
+
+if Rails.env.production?
+  Battleship.game_platform = P45
+elsif Rails.env.development? || Rails.env.test?
+  Battleship.game_platform = MockPlatform
 end

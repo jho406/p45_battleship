@@ -5,11 +5,15 @@ describe Battleship do
     Battleship.game_platform = double("P45", :new => api)
   end
 
-  let('turns'){
-    double('turns', :'new'=>{})
-  }
+  after(:each) do
+    Battleship.game_platform = MockPlatform
+  end
 
-  let('game'){
+  let(:turns) do
+    double('turns', :'new'=>{})
+  end
+
+  let(:game) do
     double("game",
       :p45_id => nil,##todo lose dependancy
       :prepared?  => true,
@@ -18,16 +22,16 @@ describe Battleship do
       :turns => turns,
       :over? => false,
       :lose! => nil)
-  }
+  end
 
-  let('api'){
+  let(:api) do
     double("api",
       :register=>{},
       :id=>0,
       :counter_nuke=>{:x=>0, :y=>0},
       :nuke=>{},
       :status=>'hit')
-  }
+  end
 
   context '.seed' do
     it 'should populate the the appropriate model' do
@@ -44,22 +48,18 @@ describe Battleship do
   end
 
   context '.ship_ids' do
-    it 'should return a list of current ids' do
+    xit 'should return a list of current ids' do
       pending 'its just one line...'
     end
   end
 
   context '.start' do
     it 'should call register a new game with the service and return a valid game' do
-      # game.should_receive(:assign_attributes)
       game.should_receive(:p45_id=)
       api.should_receive(:register)
       api.should_receive(:counter_nuke)
 
       Battleship.start(game).should eql(game)
-    end
-
-    xit 'should not call register if the game is not prepared' do
     end
   end
 
@@ -70,7 +70,10 @@ describe Battleship do
 
       Battleship.nuke!(game, 0).should eql(game)
     end
-    xit 'should not call nuke if game is over' do
+    it 'should not call nuke if game is over' do
+      game.stub(:over?){true}
+      Battleship.should_not_receive(:new)
+      Battleship.nuke!(game, 0)
     end
   end
 
@@ -139,7 +142,7 @@ describe Battleship do
 
       args[:orientation] = :vertical
       args[:position] = 90
-      expect{Battleship.expand_pos(args)}.to raise_error(ArgumentError)
+      expect{ Battleship.expand_pos(args) }.to raise_error(ArgumentError)
     end
 
   end
