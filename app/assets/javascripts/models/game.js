@@ -1,7 +1,8 @@
 app.Models.Game = Backbone.Model.extend({
-  url: '/games',
+  urlRoot: '/games',
   paramRoot: 'game',
   initialize: function(){
+    this.listenTo(this, 'change:over', this.triggerOver)
     this.turns = new app.Collections.TurnCollection;
     this.turns.url = '/games/' + this.id + '/turns';
 
@@ -23,5 +24,8 @@ app.Models.Game = Backbone.Model.extend({
 
     if (bad_string) return "strings are empty or nil";
 
+  },
+  triggerOver: function(model, value){
+    if (value) this.trigger('over');
   }
 });

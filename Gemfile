@@ -32,11 +32,19 @@ group :test do
   gem 'webmock'
   gem 'shoulda-matchers'
   gem 'factory_girl_rails'
+  gem 'jasmine'
+  gem 'capybara'
+  gem 'database_cleaner'
 end
 
 group :development do
   gem "better_errors"
   gem 'rspec-rails'
+end
+
+group :test, :development do
+  gem 'jasmine'
+  gem 'capybara'
 end
 
 gem 'httparty'

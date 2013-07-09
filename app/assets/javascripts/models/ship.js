@@ -15,7 +15,7 @@ app.Models.Ship = Backbone.Model.extend({
     var orien = this.get('orientation');
     orien = orien == 'right' ? 'bottom' : 'right';
     this.set('orientation', orien);
-    return this
+    return this;
   },
   positions: function(){
     return this.cells.map(function(obj){
@@ -24,8 +24,15 @@ app.Models.Ship = Backbone.Model.extend({
   },
   toJSON: function(){
     var json = _.clone(this.attributes);
+    //todo:monky patched.. fix all naming of orientation
+    if (_.contains(['left', 'right'], json.orientation)){
+      json.orientation = 'horizontal'
+    } else {
+      json.orientation = 'vertical'
+    }
+
     var first = this.positions()[0];
-    json.positions = first ? [first] : [];
+    json.positions = first >= 0 ? [first] : [];
     return json;
   }
 });

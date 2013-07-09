@@ -35,8 +35,10 @@ app.Models.Cell = Backbone.Model.extend({
 
     _.each(cells, function(cell){
       obj.cells.push(cell);
-      cell.set('ship', item);
+      cell.set('ship', obj);
     });
+
+    obj.trigger('attached');
     return this; //head
   },
   detach: function(){
@@ -51,6 +53,7 @@ app.Models.Cell = Backbone.Model.extend({
     });
 
     ship.cells.reset();
+    ship.trigger('detached');
     return head;
   },
   isHead:function(){
