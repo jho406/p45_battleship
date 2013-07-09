@@ -14,7 +14,7 @@
       var data = {},
           attrs = _.clone(this.attributes);
 
-      if(options.includeParamRoot && this.paramRoot) {
+      if(options && options.includeParamRoot && this.paramRoot) {
         data[this.paramRoot] = attrs;
       } else {
         data = attrs;
