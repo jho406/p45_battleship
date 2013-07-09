@@ -16,22 +16,27 @@ $(function(){
 
 <div id="container">
 <%= form_for @game do |f| %>
-  <%= f.email_field :email %>
-  <%= f.text_field :full_name %>
-  <!-- todo htmlsafe -->
-<!-- the other alter is to sync model /build form it on submit/ but i think this is nicer since i have default on no js BUT how to handle arrays.. i can preprocess it on backbone-->
-  <div id="placement-board">
-    <%Battleship.cell_count.times do|n|%>
-      <%rc = Battleship.pos_to_coord(n)%>
-      <div class="cell pos<%=n%> r<%=rc[:x]%> c<%=rc[:y]%>"></div>
-    <%end%>
+  <div id="fields">
+    <%= f.email_field :email, :placeholder => "example@example.org" %>
+    <%= f.text_field :full_name, :placeholder => "your full name" %>
+      <%=f.submit%>
+      <div id="notifications"></div>
+    <ul id="aresenal">
+
+    </ul>
   </div>
 
-  <%=f.submit%>
+  <!-- todo htmlsafe -->
+  <table id="placement-board">
+    <%Battleship::BOARD_SIZE.times do|r|%>
+      <tr class="row<%=r%>">
+        <%Battleship::BOARD_SIZE.times do|c|%>
+          <td class="cell col<%=c%>"></td>
+        <%end%>
+      </tr>
+    <%end%>
+  </table>
 <% end %>
 
-<ul id="aresenal">
-
-</ul>
 
 </div>

@@ -1,29 +1,201 @@
 /*
- * This is a manifest file that'll be compiled into application.css, which will include all the files
- * listed below.
- *
- * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
- * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
- *
- * You're free to add application-wide styles to this file and they'll appear at the top of the
- * compiled file, but it's generally better to create a new file per style scope.
- *
  *= require_self
  *= require_tree .
  */
 
-.cell {
-  background: #ccc;
-  width: 20px;
-  height: 20px;
-  float: left;
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
 }
 
-#attack-board, #status-board, #placement-board {
-  width: 200px;
-  height: 200px;
+body{
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  color: #fff;
+}
+
+.ui-draggable-dragging {
+  background: #2c3e50;
+  width: 10%;
+  height: 10%;
+}
+
+.cell{
+  background: #2c3e50;
+  width: 10%;
+  box-shadow: 0 0 1em #7f8c8d;
+  color: #2ecc71;
+  font-size: 20px;
+  text-align: center;
+  height: 10%;
+}
+
+html, body, #container{
+  height:100%;
+  width: 100%;
+}
+
+#container{
+  overflow: hidden;
 }
 
 #attack-board .cell{
+  background: black;
+}
+
+form{
+  width: 100%;
+  height: 100%;
+}
+
+#placement-board{
+  width: 70%;
+  height: 100%;
+  background: #eee;
+}
+
+#fields{
+  height: 100%;
+  width: 30%;
+  float: left;
+  background-color: #eeeeee;
+}
+
+ul{
+  list-style-type: none;
+  margin: 0px;
+  height: 100%;
+}
+
+ul li{
+  width: calc(100% - 20px);
+  height: 50px;
+  color: #2c3e50;
+  line-height: 50px;
+  font-size: 20px;
+  font-weight: bold;
+  padding-left: 20px;
+  border-bottom: 1px solid #7f8c8d;
+}
+
+input[type="submit"]{
+  width:90%;
+  height:50px;
+  border: none;
+  border-radius: 5px;
+  background: #2ecc71;
+  margin-right: auto;
+  margin-left: auto;
+  display: block;
+  font-size: 20px;
+  color: #fff;
+}
+
+.ui-draggable-dragging, .stopped{
+  background: #2ecc71;
+  width: calc(23.3% - 20px);
+  height: 10%;
+}
+
+input[type="text"], input[type="email"] {
+  background-color: #eeeeee;
+  border: none;
+  box-sizing: border-box;
+  width: 100%;
+  height: 50px;
+  padding-left: 20px;
+  font-size: 20px;
+}
+
+.controls{
+  display:none;
+  font-size: 18px;
+}
+
+li.stopped{
+  line-height: 10px;
+  width: 23.3%;
+  padding-left: 0px;
+  display: table;
+}
+
+.stopped .controls{
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.stopped h3{
+  display: none;
+}
+
+td{
+  vertical-align: middle;
+  border: none;
+}
+
+table{
+  border-collapse:collapse;
+}
+
+a.handle:link {text-decoration:none; color:#2ecc71}
+a.handle:visited {text-decoration:none; color:#2ecc71}
+a.handle:active {text-decoration:none; color:#2ecc71;}
+
+.controls a.handle:link {text-decoration:none; color:#2c3e50}
+.controls a.handle:visited {text-decoration:none; color:#2c3e50}
+.controls a.handle:active {text-decoration:none; color:#2c3e50;}
+
+#attack-board, #status-board{
+  width: 50%;
+  height: 100%;
+}
+
+#attack-board{
+  float: left;
+}
+
+#status-board{
+  float: right;
+}
+
+
+#attack-board .cell, #status-board .cell{
+  float: left;
+  width: 10%;
+  height: 10%;
+}
+
+#status-board .cell{
+  background-color: #ecf0f1;
+}
+
+#game-over {
+  position: fixed;
+  width: 140%;
+  height: 100%;
+  text-align: center;
+  z-index: 200;
+  top: 0px;
+  left: -20%;
+  display: none;
+  opacity: 1;
   background: #3498db;
 }

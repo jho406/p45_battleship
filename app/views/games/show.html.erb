@@ -10,7 +10,9 @@ $(function(){
     collection: app.game.turns
   });
 
-  app.game.turns.fetch();//change to reset
+  app.game.turns.fetch();//todo: change to reset!
+
+  app.gameOver = new app.Views.GameOver({model: app.game});
 });
 </script>
 <div id='container'>
@@ -19,4 +21,7 @@ $(function(){
 
   <div id="status-board">
   </div>
+</div>
+
+<div id="game-over">
 </div>
