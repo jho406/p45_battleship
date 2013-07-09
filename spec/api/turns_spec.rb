@@ -1,22 +1,18 @@
 require "spec_helper"
 
 describe "/turns", :type => :api do
-  before do
-    Battleship.game_platform = P45
-  end
-
   let(:game) { create :game }
   let(:url)  { "games/#{game.id}/turns" }
 
   context 'creating a turn' do
-    use_vcr_cassette 'p45/nuke'
     it 'should 201 if successful' do
       expect {
-        post "#{url}.json", { :position => 0}.to_json, "CONTENT_TYPE" => "application/json"
-      }.to change{game.turns.count}.by(2)
+        post "#{url}", { :turn => {:position => 0} }.to_json,
+          "CONTENT_TYPE" => "application/json"
 
-      response.status.should eql(201)
-      response.body.should eql("{}")
+        response.status.should eql(201)
+        response.body.should eql("{}")
+      }.to change{game.turns.count}.by(2)
     end
   end
 
