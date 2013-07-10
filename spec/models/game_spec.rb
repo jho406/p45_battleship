@@ -57,21 +57,21 @@ describe Game do
     end
   end
 
-  context '#decrement_life_cache' do
+  context '#decrement_life_cache!' do
     it 'should decrement lives if game is not over' do
       game = create :game, :over=>false
-      expect{ game.decrement_life_cache }.to change{ game.lives }
+      expect{ game.decrement_life_cache! }.to change{ game.lives }
     end
 
     it 'should not decrement lives if game is over' do
       game = create :game, :over=>true
-      expect{ game.decrement_life_cache }.to_not change{ game.lives }
+      expect{ game.decrement_life_cache! }.to_not change{ game.lives }
     end
 
     it 'should set over to false if game is over' do
       game = create :game
       game.update_attribute(:lives, 1)
-      game.decrement_life_cache
+      game.decrement_life_cache!
       game.over.should eql(true)
     end
   end

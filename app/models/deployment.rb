@@ -14,7 +14,7 @@ class Deployment < ActiveRecord::Base
 
   def damage!
     self.decrement!(:lives)
-    self.game.decrement_life_cache
+    self.game.decrement_life_cache!
   end
 
   def reset_positions

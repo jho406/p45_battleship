@@ -41,8 +41,7 @@ class Game < ActiveRecord::Base
     self.update_attribute(:over, true)
   end
 
-  def decrement_life_cache
-    #todo rename to decrement_life_cache!
+  def decrement_life_cache!
     return if self.over?
     self.decrement!(:lives)
     self.update_attribute(:over, true) if self.lives <=0
