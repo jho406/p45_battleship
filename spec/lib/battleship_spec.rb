@@ -77,29 +77,29 @@ describe Battleship do
     end
   end
 
-  context '.recieve_nuke!' do
-    it 'should nuke a deployed ship and create a turn' do
-      game.stub_chain(:deployments, :lock_on).and_return({})
-      Battleship.should_receive(:damage_and_report!)
-      turns.should_receive(:create!)
+  # context '.recieve_nuke!' do
+  #   it 'should nuke a deployed ship and create a turn' do
+  #     game.stub_chain(:deployments, :lock_on).and_return({})
+  #     Battleship.should_receive(:damage_and_report!)
+  #     turns.should_receive(:create!)
 
-      Battleship.receive_nuke!(game, 0)
-    end
-  end
+  #     Battleship.receive_nuke!(game, 0)
+  #   end
+  # end
 
-  context '.damage_and_report!' do
-    it 'should damage! return "hit" if a ship was passed' do
-      ship = double('ship')
-      ship.should_receive(:damage!)
-      Battleship.damage_and_report!(ship).should eql('hit')
-    end
+  # context '.damage_and_report!' do
+  #   it 'should damage! return "hit" if a ship was passed' do
+  #     ship = double('ship')
+  #     ship.should_receive(:damage!)
+  #     Battleship.damage_and_report!(ship).should eql('hit')
+  #   end
 
-    it 'should not damage! and return "miss" if falsy was passed' do
-      ship = false
-      ship.should_not_receive(:damage!)
-      Battleship.damage_and_report!(ship).should eql('miss')
-    end
-  end
+  #   it 'should not damage! and return "miss" if falsy was passed' do
+  #     ship = false
+  #     ship.should_not_receive(:damage!)
+  #     Battleship.damage_and_report!(ship).should eql('miss')
+  #   end
+  # end
 
   context '.coord_to_pos' do
     it 'should convert a hash of coords into a index' do

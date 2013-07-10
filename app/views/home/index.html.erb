@@ -28,9 +28,9 @@ $(function(){
 
   <!-- todo htmlsafe -->
   <table id="placement-board">
-    <%Battleship::BOARD_SIZE.times do|r|%>
+    <% board_size.times do|r|%>
       <tr class="row<%=r%>">
-        <%Battleship::BOARD_SIZE.times do|c|%>
+        <% board_size.times do|c|%>
           <td class="cell col<%=c%>"></td>
         <%end%>
       </tr>
