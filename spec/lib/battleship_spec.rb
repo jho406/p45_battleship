@@ -15,7 +15,7 @@ describe Battleship do
 
   let(:game) do
     double("game",
-      :p45_id => nil,##todo lose dependancy
+      :platform_id => nil,
       :prepared?  => true,
       :email => 'foo@foo.com',
       :full_name => 'foo',
@@ -33,11 +33,9 @@ describe Battleship do
       :status=>'hit')
   end
 
-  context '.seed' do
-    it 'should populate the the appropriate model' do
-      model = double('game')
-      model.should_receive(:create).with(Battleship::SHIPS)
-      Battleship.seed(model)
+  context '.ship_attributes' do
+    it 'should return ship attributes' do
+      Battleship.ships_attributes.should eql(Battleship::SHIPS)
     end
   end
 
@@ -47,15 +45,9 @@ describe Battleship do
     end
   end
 
-  context '.ship_ids' do
-    xit 'should return a list of current ids' do
-      pending 'its just one line...'
-    end
-  end
-
   context '.start' do
     it 'should call register a new game with the service and return a valid game' do
-      game.should_receive(:p45_id=)
+      game.should_receive(:platform_id=)
       api.should_receive(:register)
       api.should_receive(:counter_nuke)
 
@@ -118,6 +110,16 @@ describe Battleship do
 
     it 'should throw an error if the index is beyond the limits of the boardsize' do
       expect{Battleship.pos_to_coord(100).should}.to raise_error(ArgumentError)
+    end
+  end
+
+  context '.collision?' do
+    it 'should return true if 2 arrays have duplicates' do
+      Battleship.collision?([1,2,3,3,4,5]).should be_true
+    end
+
+    it 'should return false if 2 arrays are void of duplicates' do
+      Battleship.collision?([1,2,3,4,5,6]).should be_false
     end
   end
 

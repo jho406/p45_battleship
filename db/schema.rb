@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130629191652) do
+ActiveRecord::Schema.define(:version => 20130710192109) do
 
   create_table "deployments", :force => true do |t|
     t.integer  "ship_id",     :null => false
@@ -24,14 +24,14 @@ ActiveRecord::Schema.define(:version => 20130629191652) do
   end
 
   create_table "games", :force => true do |t|
-    t.integer  "p45_id",                        :null => false
-    t.string   "full_name",                     :null => false
-    t.string   "email",                         :null => false
-    t.boolean  "over",       :default => false, :null => false
-    t.datetime "created_at",                    :null => false
-    t.datetime "updated_at",                    :null => false
-    t.boolean  "won",        :default => false, :null => false
-    t.integer  "lives",      :default => 0,     :null => false
+    t.integer  "platform_id",                    :null => false
+    t.string   "full_name",                      :null => false
+    t.string   "email",                          :null => false
+    t.boolean  "over",        :default => false, :null => false
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
+    t.boolean  "won",         :default => false, :null => false
+    t.integer  "lives",       :default => 0,     :null => false
   end
 
   create_table "ships", :force => true do |t|

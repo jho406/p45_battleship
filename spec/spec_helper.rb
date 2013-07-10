@@ -39,7 +39,7 @@ RSpec.configure do |config|
   # the seed, which is printed after each run.
   #     --seed 1234
   config.order = "random"
-  config.before(:each){Battleship.seed(Ship)}
+  config.before(:each){Ship.create(Battleship.ships_attributes)}
   config.after(:each){ Ship.delete_all }
 
   config.include(FactoryGirl::Syntax::Methods)

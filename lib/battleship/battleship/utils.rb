@@ -15,8 +15,8 @@ module Battleship
       STEP = {:horizontal => 1, :vertical => 10}
 
 
-      def seed(model)
-        model.create(SHIPS)
+      def ships_attributes
+        SHIPS
       end
 
       def cell_count
@@ -25,11 +25,6 @@ module Battleship
 
       def board_size
         BOARD_SIZE
-      end
-
-      def ship_ids
-        #todo: remove
-        Ship.pluck(:id)
       end
 
       def coord_to_pos(coord)
@@ -48,6 +43,10 @@ module Battleship
 
         coord = index.divmod(board_size)
         {:x => coord[0], :y => coord[1]}
+      end
+
+      def collision?(positions)
+        !positions.group_by { |pos| pos }.select { |k, v| v.size > 1 }.empty?
       end
 
       def expand_pos(args)

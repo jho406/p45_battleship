@@ -1,11 +1,11 @@
 module Battleship
   module Actions
     def start(game)
-      return game if game.p45_id
+      return game if game.platform_id
 
       api = self.game_platform.new({:email => game.email, :name => game.full_name})
       api.register
-      game.p45_id = api.id
+      game.platform_id = api.id
       game.turns.new({:position => coord_to_pos(api.counter_nuke)})
 
       return game
@@ -13,7 +13,7 @@ module Battleship
 
     def nuke!(game, index)
       return game if game.over?
-      api = game_platform.new(:id => game.p45_id)
+      api = game_platform.new(:id => game.platform_id)
 
       api.nuke(pos_to_coord(index))
       #which creates a turn hit/miss # todo, add a transformer

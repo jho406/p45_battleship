@@ -1,9 +1,9 @@
 FactoryGirl.define do
-  sequence(:p45_id)
+  sequence(:platform_id)
   factory :game do
     email 'test@test.com'
     full_name 'test'
-    p45_id { generate(:p45_id) }
+    platform_id { generate(:platform_id) }
 
     factory :game_with_deployments do
       # FactoryGirl.create(:ship)

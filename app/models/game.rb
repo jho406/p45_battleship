@@ -6,12 +6,12 @@ class Game < ActiveRecord::Base
   has_many :ships, :through => :deployments
 
   attr_accessible :email, :full_name,
-    :p45_id,
+    :platform_id,
     :deployments_attributes, :turns_attributes
 
   accepts_nested_attributes_for :deployments, :turns
 
-  validates :email, :full_name, :p45_id, :presence => true
+  validates :email, :full_name, :platform_id, :presence => true
   validates :email,
     :format => { :with=> /\A[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]+\z/ }
 
@@ -56,8 +56,7 @@ class Game < ActiveRecord::Base
 
   def ships_must_exist_and_be_unique
     id_set = self.deployments.map(&:ship_id).to_set
-    ##todo: inject the ship model?
-    unless Battleship.ship_ids.to_set == id_set
+    unless Ship.pluck(:id).to_set == id_set
       errors.add(:deployments_attributes, "ship ids are not valid")
     end
   end
@@ -68,8 +67,8 @@ class Game < ActiveRecord::Base
       memo += ship.positions
     end
 
-    #todo: extract and give to battleship
-    collision = !all_positions.group_by { |pos| pos }.select { |k, v| v.size > 1 }.empty?
-    errors.add(:deployment_positions, "ships overlap") if collision
+    if Battleship.collision?(all_positions)
+      errors.add(:deployment_positions, "ships overlap")
+    end
   end
 end
