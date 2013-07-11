@@ -1,35 +1,36 @@
 app.Models.Ship = Backbone.Model.extend({
-  hasMany:{
+  hasMany: {
     cells: 'CellCollection'
   },
-  initialize: function(){
+  initialize: function() {
     var self = this;
     _.each(self.hasMany, function(collection,  name){
       self[name] = new app.Collections[collection]([], {'hasOne':{'ship': self}});
     });
   },
-  defaults:{
-    'orientation':'right'
+  defaults: {
+    'direction':'right'
   },
-  toggleOrientation: function(){
-    var orien = this.get('orientation');
-    orien = orien == 'right' ? 'bottom' : 'right';
-    this.set('orientation', orien);
+  toggleDirection: function() {
+    var direction = this.get('direction');
+    direction = direction == 'right' ? 'bottom' : 'right';
+    this.set('direction', direction);
     return this;
   },
-  positions: function(){
+  positions: function() {
     return this.cells.map(function(obj){
       return obj.get('position');
     });
   },
   toJSON: function(){
     var json = _.clone(this.attributes);
-    //todo:monky patched.. fix all naming of orientation
-    if (_.contains(['left', 'right'], json.orientation)){
-      json.orientation = 'horizontal'
+
+    if (_.contains(['left', 'right'], json.direction)) {
+      json.orientation = 'horizontal';
     } else {
-      json.orientation = 'vertical'
+      json.orientation = 'vertical';
     }
+    delete json.direction;
 
     var first = this.positions()[0];
     json.positions = first >= 0 ? [first] : [];

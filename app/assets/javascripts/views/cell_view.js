@@ -1,20 +1,20 @@
 
 app.Views.CellView = Backbone.View.extend({
-  initialize: function(){
+  initialize: function() {
     this.$el.droppable({ tolerance: "pointer"});
     this.render();
     this.listenTo(this.model, 'change', this.render);
   },
   events: {
-    "drop": function(e, obj){
+    "drop": function(e, obj) {
       var item = obj.draggable.data('model');
       this.attachDropped(item);
     }
   },
-  attachDropped: function(item){
-    this.model.attach(item, item.get('length'), item.get('orientation'));
+  attachDropped: function(item) {
+    this.model.attach(item, item.get('length'), item.get('direction'));
   },
-  presenter: function(){
+  presenter: function() {
     var defaultPresenter = {};
     var ship = this.model.get('ship');
     if (ship){
@@ -23,7 +23,7 @@ app.Views.CellView = Backbone.View.extend({
     }
     return  defaultPresenter;
   },
-  render: function(){
+  render: function() {
     this.$el.html(HoganTemplates['cell'].render(this.presenter()));
   }
 });

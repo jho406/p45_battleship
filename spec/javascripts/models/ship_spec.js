@@ -6,13 +6,13 @@ describe("app.Models.Ship", function() {
     ship = new app.Models.Ship;
   });
 
-  describe("#toggleOrientation", function(){
-    it("it should toggle the orientation of the ship", function(){
-      var previous = ship.get('orientation')
-      ship.toggleOrientation();
-      expect(ship.get('orientation')).not.toBe(previous);
-      ship.toggleOrientation();
-      expect(ship.get('orientation')).toBe(previous);
+  describe("#toggleDirection", function(){
+    it("it should toggle the direction of the ship", function(){
+      var previous = ship.get('direction')
+      ship.toggleDirection();
+      expect(ship.get('direction')).not.toBe(previous);
+      ship.toggleDirection();
+      expect(ship.get('direction')).toBe(previous);
     });
   });
 

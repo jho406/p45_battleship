@@ -1,24 +1,24 @@
 app.Views.StatusBoardView = Backbone.View.extend({
   el: '#status-board',
-  initialize: function(){
+  initialize: function() {
     this.listenTo(this.collection, 'sync', this.render);
   },
-  render: function(){
+  render: function() {
     var presenter = this.presenter();
     var html = HoganTemplates['cells'].render(presenter);
     this.$el.html(html);
 
-    this.$el.find('.cell').each(function(index, el){
+    this.$el.find('.cell').each(function(index, el) {
       $(el).data('position', index);
     });
 
     return this;
   },
-  cells: function(){
+  cells: function() {
     return this.collection.where({attacked: false});
   },
-  presenter: function(){
-    var cells = _.inject(this.cells(),function(memo, obj){
+  presenter: function() {
+    var cells = _.inject(this.cells(), function(memo, obj) {
       memo[obj.get('position')] = obj.get('status');
       return memo;
     },[]);
@@ -30,22 +30,22 @@ app.Views.StatusBoardView = Backbone.View.extend({
 app.Views.AttackBoardView = app.Views.StatusBoardView.extend({
   el: '#attack-board',
   events:{
-    'click .cell:not(.inactive)': function(e, obj){
+    'click .cell:not(.inactive)': function(e, obj) {
       var position = $(e.target).data('position');
       this.attack(position);
     }
   },
-  initialize: function(){
+  initialize: function() {
     app.Views.StatusBoardView.prototype.initialize.apply(this, arguments);
   },
-  attack: function(position){
+  attack: function(position) {
     var self = this;
     this.collection.create({position: position}, {success:function(){
       self.collection.fetch();
       app.game.fetch();//todo: REFACTOR! all so all nuke return game and turns!
     }});
   },
-  cells: function(){
+  cells: function() {
     return this.collection.where({attacked:true});
   }
 });

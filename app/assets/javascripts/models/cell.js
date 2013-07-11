@@ -1,13 +1,13 @@
 app.Models.Cell = Backbone.Model.extend({
-  siblings:{},
-  defaults:{ship: null},
+  siblings: {},
+  defaults: {ship: null},
   //Iterates through each adjacent cell with a callback
-  andEachAdjacentCells: function(num, direction, callback){
+  andEachAdjacentCells: function(num, direction, callback) {
     _.each(this.andAdjacentCells(num, direction), callback);
   },
   //All or nothing retrieval of current AND adjacent cells based on a direction
   //and number of cells to retrieve.
-  andAdjacentCells: function(num, direction){
+  andAdjacentCells: function(num, direction) {
     var foundCells = [this];
     num--;// because its inclusive of this
 
@@ -21,9 +21,10 @@ app.Models.Cell = Backbone.Model.extend({
     }
     return foundCells;
   },
-  attach: function(obj, steps, direction){
+  attach: function(obj, steps, direction) {
     var cells = this.andAdjacentCells(steps, direction);
 
+    //todo: extract method...
     var isCollision = !!_.find(cells, function(cell){
       return !!cell.get("ship");
     });
@@ -33,7 +34,7 @@ app.Models.Cell = Backbone.Model.extend({
       return false;
     }
 
-    _.each(cells, function(cell){
+    _.each(cells, function(cell) {
       obj.cells.push(cell);
       cell.set('ship', obj);
     });
@@ -41,7 +42,7 @@ app.Models.Cell = Backbone.Model.extend({
     obj.trigger('attached');
     return this; //head
   },
-  detach: function(){
+  detach: function() {
     if (!this.get('ship')) return;
     //todo: refactor so it doesn't need ship...
     //prob pass in a string/ function i bind to.
@@ -55,8 +56,5 @@ app.Models.Cell = Backbone.Model.extend({
     ship.cells.reset();
     ship.trigger('detached');
     return head;
-  },
-  isHead:function(){
-    //todo
   }
 });

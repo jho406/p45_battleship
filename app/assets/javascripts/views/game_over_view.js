@@ -1,18 +1,18 @@
 app.Views.GameOver = Backbone.View.extend({
   el: '#game-over',
-  initialize: function(){
+  initialize: function() {
     this.listenTo(this.model, 'over', this.render);
   },
-  presenter: function(){
+  presenter: function() {
     var defaultPresenter = this.model.toJSON();
     if (defaultPresenter.won){
-      defaultPresenter.status = "You Win!"
+      defaultPresenter.status = "You Win!";
     } else {
-      defaultPresenter.status = "You Lose"
+      defaultPresenter.status = "You Lose";
     }
-    return defaultPresenter
+    return defaultPresenter;
   },
-  render: function(){
+  render: function() {
     this.$el.html(HoganTemplates['over'].render(this.presenter()));
     this.$el.show().find('div').addClass("animateIn");
     return this;

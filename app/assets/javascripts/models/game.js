@@ -10,22 +10,25 @@ app.Models.Game = Backbone.Model.extend({
     this.deployments.url = '/game/' + this.id + '/deployments';
    },
   validate: function(attrs, options){
-    //all deployments have a position
-    var bad_pos = _.any(attrs.deployments_attributes, function(ship){
+    var error;
+    if (error = this.validate_positions(attrs.deployments_attributes)) return error;
+    if (error = this.validate_email(attrs.email)) return error;
+    if (error = this.validate_full_name(attrs.full_name)) return error;
+  },
+  validate_positions: function(positions){
+    var bad_pos = _.any(positions, function(ship) {
       return ship.positions.length != 1
     });
 
     if (bad_pos) return "not all ships have been deployed";
-
-    //todo: refactor to own methods
-    var bad_string = _.any([attrs.full_name, attrs.email],function(str){
-      return !(attrs.full_name && attrs.full_name.length>0)
-    })
-
-    if (bad_string) return "strings are empty or nil";
-
   },
-  triggerOver: function(model, value){
+  validate_full_name: function(full_name) {
+    if (!full_name || full_name.length <=0) return "missing name";
+  },
+  validate_email: function(email) {
+    if (!email || email.length <=0) return "missing email";
+  },
+  triggerOver: function(model, value) {
     if (value) this.trigger('over');
   }
 });

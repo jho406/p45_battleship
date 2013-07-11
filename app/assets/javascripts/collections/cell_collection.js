@@ -1,11 +1,11 @@
 app.Collections.CellCollection = Backbone.Collection.extend({
-  initialize: function(models, options){
+  initialize: function(models, options) {
     if(options && options.hasOne){
       this.hasOne = options.hasOne;
     }
   },
   model: app.Models.Cell,
-  meshify: function(len){
+  meshify: function(len) {
     //Create the references
     for (var i = 0, l = this.length-1; i <= l; i++) {
       var top = this.at(i-len) || null,
@@ -33,17 +33,16 @@ app.Collections.CellCollection = Backbone.Collection.extend({
     };
     return this;
   },
-  add: function(models, options){
+  add: function(models, options) {
     //todo: has one fix
-    if (!_.isArray(models)) models = models ? [models] : []
+    if (!_.isArray(models)) models = models ? [models] : [];
 
     var self = this;
     _.each(models, function(m){
-      // m.ship = self.ship || null
       if (m instanceof Backbone.Model) {
         m.set('ship', self.ship || null);
       }else {
-        m.ship = self.ship || null
+        m.ship = self.ship || null;
       }
     });
 

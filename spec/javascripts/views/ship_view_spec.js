@@ -20,13 +20,13 @@ describe('app.Views.ShipView', function(){
   describe('#reorient', function(){
     it('should detach the ship and reattach with a new orientation', function(){
       model.detach = jasmine.createSpy('detach');
-      model.toggleOrientation = jasmine.createSpy('toggleOrientation');
+      model.toggleDirection = jasmine.createSpy('toggleDirection');
       model.attach = jasmine.createSpy('attach')
 
       shipView.reorient();
 
       expect(model.detach).toHaveBeenCalled();
-      expect(model.toggleOrientation).toHaveBeenCalled();
+      expect(model.toggleDirection).toHaveBeenCalled();
       expect(model.attach).toHaveBeenCalled();
     });
   });
