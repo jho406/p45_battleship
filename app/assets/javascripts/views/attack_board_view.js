@@ -40,10 +40,7 @@ app.Views.AttackBoardView = app.Views.StatusBoardView.extend({
   },
   attack: function(position) {
     var self = this;
-    this.collection.create({position: position}, {success:function(){
-      self.collection.fetch();
-      app.game.fetch();//todo: REFACTOR! all so all nuke return game and turns!
-    }});
+    this.collection.create({position: position});
   },
   cells: function() {
     return this.collection.where({attacked:true});

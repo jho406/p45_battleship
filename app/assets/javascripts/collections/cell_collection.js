@@ -1,9 +1,4 @@
 app.Collections.CellCollection = Backbone.Collection.extend({
-  initialize: function(models, options) {
-    if(options && options.hasOne){
-      this.hasOne = options.hasOne;
-    }
-  },
   model: app.Models.Cell,
   meshify: function(len) {
     //Create the references

@@ -1,12 +1,6 @@
 app.Models.Ship = Backbone.Model.extend({
-  hasMany: {
-    cells: 'CellCollection'
-  },
   initialize: function() {
-    var self = this;
-    _.each(self.hasMany, function(collection,  name){
-      self[name] = new app.Collections[collection]([], {'hasOne':{'ship': self}});
-    });
+    this.cells = new app.Collections.CellCollection();
   },
   defaults: {
     'direction':'right'

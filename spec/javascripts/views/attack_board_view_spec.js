@@ -45,7 +45,7 @@ describe("app.Views.AttackBoardView", function(){
     it("should create a new turn with the clicked cell", function(){
       spyOn(collection, 'create')
       statusBoardView.attack(0);
-      expect(collection.create).toHaveBeenCalledWith({position:0}, jasmine.any(Object));
+      expect(collection.create).toHaveBeenCalledWith({position:0});
     });
   });
 })

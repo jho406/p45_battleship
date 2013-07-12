@@ -2,6 +2,7 @@ app.Views.GameOver = Backbone.View.extend({
   el: '#game-over',
   initialize: function() {
     this.listenTo(this.model, 'over', this.render);
+    if (this.model.get('over')) this.render();
   },
   presenter: function() {
     var defaultPresenter = this.model.toJSON();

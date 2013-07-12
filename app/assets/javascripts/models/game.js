@@ -2,13 +2,20 @@ app.Models.Game = Backbone.Model.extend({
   urlRoot: '/games',
   paramRoot: 'game',
   initialize: function(){
+    var self = this;
     this.listenTo(this, 'change:over', this.triggerOver)
-    this.turns = new app.Collections.TurnCollection;
-    this.turns.url = '/games/' + this.id + '/turns';
+    this.turns = new app.Collections.TurnCollection({parent: this});
+    // this.turns.url = this.urlRoot + '/' + this.id + '/turns';
 
-    this.deployments = new app.Collections.DeploymentCollection;
-    this.deployments.url = '/game/' + this.id + '/deployments';
-   },
+    this.deployments = new app.Collections.DeploymentCollection({parent: this});
+
+    this.listenTo(this.turns, 'sync', this.fetchSelf);
+  },
+  fetchSelf: function() {
+    if (this.turns.length % 2 == 0){
+      this.fetch();
+    };
+  },
   validate: function(attrs, options){
     var error;
     if (error = this.validate_positions(attrs.deployments_attributes)) return error;
