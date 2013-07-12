@@ -7,7 +7,7 @@ describe "/turns", :type => :api do
   context 'creating a turn' do
     it 'should 201 if successful' do
       expect {
-        post "#{url}", { :turn => {:position => 0} }.to_json,
+        post "#{url}.json", { :turn => {:position => 0} }.to_json,
           "CONTENT_TYPE" => "application/json"
 
         response.status.should eql(201)

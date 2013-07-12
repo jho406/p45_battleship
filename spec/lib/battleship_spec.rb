@@ -9,8 +9,10 @@ describe Battleship do
     Battleship.game_platform = MockPlatform
   end
 
+  let(:turn){double('turn')}
+
   let(:turns) do
-    double('turns', :'new'=>{})
+    double('turns', :'new'=>{}, :'create!' => turn)
   end
 
   let(:game) do
@@ -56,11 +58,11 @@ describe Battleship do
   end
 
   context '.nuke!' do
-    it 'should nuke via the platform api and create a turn' do
+    it 'should nuke via the platform api, create 2 turns and return the first (the one player created)' do
+      api.should_receive(:nuke)
       turns.should_receive(:create!)
       Battleship.should_receive(:receive_nuke!)
-
-      Battleship.nuke!(game, 0).should eql(game)
+      Battleship.nuke!(game, 0).should eql(turn)
     end
     it 'should not call nuke if game is over' do
       game.stub(:over?){true}

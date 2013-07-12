@@ -12,26 +12,21 @@ module Battleship
     end
 
     def nuke!(game, index)
-      return game if game.over?
+      #todo: code smell, may be some depedancies on game implementation.
+      return if game.over?
       api = game_platform.new(:id => game.platform_id)
 
       api.nuke(pos_to_coord(index))
       #which creates a turn hit/miss # todo, add a transformer
 
-      #check if i won, aka if its game over for them but not us
-      if api.status == 'lost'
-        game.win!
-        return game
-      end
-
-      game.turns.create!(:position=>index, :status=> api.status, :attacked=>true)
+      turn = game.turns.create!(:position=>index, :status=> api.status, :attacked=>true)
 
       #i didn't win yet, i also receive a hit
       #todo: eager load assoications via the controller
       index = coord_to_pos(api.counter_nuke)
       receive_nuke!(game, index)
 
-      return game
+      return turn
     end
 
     private
