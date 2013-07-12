@@ -9,7 +9,7 @@ $(function(){
 
   app.ships.reset(<%=raw(
   render :template  => 'ships/index',
-         :object    =>  Ship.all)%>);
+         :object    =>  Ship.all, :formats =>[:json])%>);
 
 });
 </script>

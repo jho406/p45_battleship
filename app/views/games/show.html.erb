@@ -1,6 +1,10 @@
 <script>
 $(function(){
-  app.game = new app.Models.Game({id: <%=@game.id%>});
+  app.game = new app.Models.Game(<%= raw(
+    render :template  => 'games/show',
+           :object    =>  @game,
+           :formats   =>  [:json]) %>
+  );
 
   app.attackBoardView = new app.Views.AttackBoardView({
     collection: app.game.turns
@@ -10,7 +14,21 @@ $(function(){
     collection: app.game.turns
   });
 
-  app.game.turns.fetch();//todo: change to reset!
+  app.game.turns.reset(<%= raw(
+    render :template  => 'turns/index',
+           :object    =>  @game.turns,
+           :formats   =>  [:json]) %>
+  );
+
+  app.game.deployments.reset(<%= raw(
+    render :template  => 'deployments/index',
+           :object    =>  @game.deployments,
+           :formats   =>  [:json]) %>
+  );
+
+
+  app.attackBoardView.render();
+  app.statusBoardView.render();
 
   app.gameOver = new app.Views.GameOver({model: app.game});
 });

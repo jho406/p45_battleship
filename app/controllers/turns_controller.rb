@@ -1,4 +1,5 @@
 class TurnsController < ApplicationController
+  respond_to :json
 
   def index
     @turns = current_game.turns
@@ -6,10 +7,7 @@ class TurnsController < ApplicationController
   end
 
   def create
-    # puts params
-    # debugger
-    Battleship.nuke!(current_game, params[:turn][:position])
-
+    @turn = Battleship.nuke!(current_game, params[:turn][:position])
 
     #backbone expects a response in the body, since a turn get created
     #from the backend also, we have no need to return something
@@ -21,9 +19,6 @@ class TurnsController < ApplicationController
       status = 201
     end
 
-    render :json=>{}.to_json, :status=> status
+    render :show, :status=> status
   end
 end
-
-
-#todo refactor: i chould just do a single turns game thing..nested turns and stuf...lazy load

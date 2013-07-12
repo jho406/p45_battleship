@@ -4,5 +4,4 @@ P45Battleship::Application.routes.draw do
     resources :turns, :only => [:create, :index]
     resources :deployments, :only => [:index]
   end
-  resources :ships
 end

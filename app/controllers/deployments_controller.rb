@@ -1,5 +1,7 @@
 class DeploymentsController < ApplicationController
+  respond_to :json
+
   def index
-    render current_game.deployments
+    @deployments = current_game.deployments
   end
 end
