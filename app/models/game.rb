@@ -26,25 +26,40 @@ class Game < ActiveRecord::Base
 
   before_create :set_initial_lives_counter
 
+
+  def receive_nuke!(index)
+    target = self.deployments.lock_on(index)
+
+    if target
+      status = target.damage_and_report!
+    else
+      status = "miss"
+    end
+
+    self.turns.create!(:position=>index, :status => status, :attacked=>false)
+  end
+
   def over?
     self.over
   end
 
   def lose!
-    #todo refactor
-    self.update_attribute(:won, false)
-    self.update_attribute(:over, false)
+    self.won = false
+    self.over = true
+    self.save(:validate => false)
   end
 
   def win!
-    self.update_attribute(:won, true)
-    self.update_attribute(:over, true)
+    self.won = true
+    self.over = true
+    self.save(:validate => false)
   end
 
   def decrement_life_cache!
     return if self.over?
     self.decrement!(:lives)
-    self.update_attribute(:over, true) if self.lives <=0
+    self.lose! if self.lives <=0
+    return self
   end
 
   private

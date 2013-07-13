@@ -39,6 +39,14 @@ describe Deployment do
     end
   end
 
+  context '#damage_and_report!' do
+    it "should call decrement! return 'hit" do
+      deployed.should_receive(:decrement!)
+      deployed.damage_and_report!.should eql('hit')
+    end
+  end
+
+
   context '.lock_on' do
     let(:deployments) { game.deployments }
 

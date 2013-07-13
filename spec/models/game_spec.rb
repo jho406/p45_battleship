@@ -34,6 +34,26 @@ describe Game do
     end
   end
 
+  context '#receive_nuke!' do
+    let(:game) { create :game }
+    let(:deployment) { game.deployments.last }
+    it 'should damage a deployment' do
+      # debugger
+      position = deployment.positions[0]
+      expect{ game.receive_nuke!(position) }.to change{deployment.reload.lives}.by(-1)
+    end
+
+    it 'should create a turn' do
+      position = deployment.positions[0]
+      expect{ game.receive_nuke!(position) }.to change{Turn.count}.by(1)
+    end
+
+    it 'should return a turn' do
+      position = deployment.positions[0]
+      game.receive_nuke!(position).should eql(Turn.last)
+    end
+  end
+
   context '#over?' do
     let(:game) { build :game, :over => true }
     it 'should just delegate to over' do
@@ -41,19 +61,21 @@ describe Game do
     end
   end
 
-  context '#win!' do
+  context '#lose!' do
     let(:game) { create :game }
-    it 'should set won to true' do
-      game.lose!
+    it 'should set won to false and over to true' do
+      game.won = false
       expect{game.win!}.to change{game.won}.to(true)
+      game.over.should be_true
     end
   end
 
-  context '#lose!' do
+  context '#win!' do
     let(:game) { create :game }
-    it 'should set won to false' do
-      game.win!
+    it 'should set won to false and over to true' do
+      game.won = true
       expect{game.lose!}.to change{game.won}.to(false)
+      game.over.should be_true
     end
   end
 

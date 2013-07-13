@@ -15,6 +15,12 @@ class Deployment < ActiveRecord::Base
   def damage!
     self.decrement!(:lives)
     self.game.decrement_life_cache!
+    return self
+  end
+
+  def damage_and_report!
+    self.damage! #decrement the ship that got hit careful for less than zero
+    return "hit"
   end
 
   def reset_positions

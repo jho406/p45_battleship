@@ -6,7 +6,7 @@ module Battleship
       api = self.game_platform.new({:email => game.email, :name => game.full_name})
       api.register
       game.platform_id = api.id
-      game.turns.new({:position => coord_to_pos(api.counter_nuke)})
+      game.turns.new({:position => coord_to_pos(api.counter_nuke), :attacked => false})
 
       return game
     end
@@ -19,30 +19,14 @@ module Battleship
       api.nuke(pos_to_coord(index))
       #which creates a turn hit/miss # todo, add a transformer
 
-      turn = game.turns.create!(:position=>index, :status=> api.status, :attacked=>true)
+      turns = [game.turns.create!(:position => index, :status => api.status, :attacked => true)]
 
       #i didn't win yet, i also receive a hit
       #todo: eager load assoications via the controller
       index = coord_to_pos(api.counter_nuke)
-      receive_nuke!(game, index)
+      turns.push(game.receive_nuke!(index))
 
-      return turn
-    end
-
-    private
-
-    def receive_nuke!(game, index)
-      locked_on_ship = game.deployments.lock_on(index)
-      status = damage_and_report!(locked_on_ship)
-      game.lose! if game.over?
-      #finally create the turn, but I didn't attack this turn so attacked == false
-      game.turns.create!(:position=>index, :status => status, :attacked=>false)
-    end
-
-    def damage_and_report!(ship)
-      return 'miss' if !ship
-      ship.damage! #decrement the ship that got hit careful for less than zero
-      return "hit"
+      return turns
     end
   end
 end

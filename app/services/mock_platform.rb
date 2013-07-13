@@ -31,30 +31,26 @@ class MockPlatform
   def initialize(args)
     if args[:id]
       @id = args[:id]
-      self.step = 0
     else
       @email = args[:email]
       @name = args[:name]
     end
   end
 
-  def step
-    CACHE.read(self.id)
-  end
-
-  def step=(num)
-    CACHE.write(self.id, num)
+  def last_move_index
+    #todo: theres a dependancy on game. It has to be created in Game before i can nuke,
+    #its fine for now. the class serves its purpose
+    Game.where(:platform_id=>@id).first.turns.where(:attacked=>false).count()
   end
 
   def step!
-    self.step = self.step + 1 unless self.step == MOVES.size-1
-    return MOVES[self.step]
+    MOVES[last_move_index]
   end
 
   def register
-    @id = rand(0..1000)
-    self.step = -1
-    @response = self.step!
+    last_id = Game.pluck(:id).last
+    @id = last_id ? last_id + 1 : rand(0..1000)
+    @response = MOVES[0]
     return self
   end
 
