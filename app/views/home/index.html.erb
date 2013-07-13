@@ -15,7 +15,7 @@ $(function(){
 </script>
 
 <div id="container">
-<%= form_for @game do |f| %>
+<%= form_for @game, :url=>api_games_path do |f| %>
   <div id="fields">
     <%= f.email_field :email, :placeholder => "example@example.org" %>
     <%= f.text_field :full_name, :placeholder => "your full name" %>

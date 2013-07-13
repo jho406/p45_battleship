@@ -2,7 +2,7 @@ require "spec_helper"
 
 describe "/games", :type => :api do
   let(:game) {  create :game }
-  let(:url) {'/games'}
+  let(:url) {'/api/games'}
   let(:deployments_attributes) do
     game.deployments.select(
       [:ship_id, :positions, :orientation]).map(&:serializable_hash)
@@ -10,7 +10,7 @@ describe "/games", :type => :api do
 
   context 'creating a game' do
     it 'should 201 if successful' do
-      post "#{url}.json", { :game=> {
+      post "#{url}", { :game=> {
         :email => 'test@test.com',
         :full_name => 'test',
         :deployments_attributes => deployments_attributes

@@ -1,12 +1,11 @@
 app.Models.Game = Backbone.Model.extend({
-  urlRoot: '/games',
+  urlRoot: '/api/games',
   paramRoot: 'game',
   initialize: function(){
     var self = this;
     this.listenTo(this, 'change:over', this.triggerOver)
-    this.turns = new app.Collections.TurnCollection({parent: this});
-    // this.turns.url = this.urlRoot + '/' + this.id + '/turns';
 
+    this.turns = new app.Collections.TurnCollection({parent: this});
     this.deployments = new app.Collections.DeploymentCollection({parent: this});
 
     this.listenTo(this.turns, 'sync', this.fetchSelf);
