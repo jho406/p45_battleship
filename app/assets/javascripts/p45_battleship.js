@@ -2,11 +2,6 @@ app = {
   Models: {},
   Collections: {},
   Views: {},
-  Routers: {},
-  initialize: function(){
-  }
+  Presenters: {},
+  Routers: {}
 }
-
-$(function(){
-  app.initialize();
-});

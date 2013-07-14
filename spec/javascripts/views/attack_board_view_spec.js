@@ -1,15 +1,17 @@
 describe("app.Views.StatusBoardView", function(){
-  var statusBoardView, collection;
+  var statusBoardView, collection, deployments, turns;
 
   beforeEach(function(){
     collection = new Backbone.Collection;
-    statusBoardView = new app.Views.StatusBoardView({collection: collection});
+    turns = new Backbone.Collection;
+    deployments = new Backbone.Collection;
+    statusBoardView = new app.Views.StatusBoardView({deployments: deployments, turns: turns});
   });
 
-  describe("#cells", function(){
+  describe("#opponentTurns", function(){
     it("should return cells where the opponent attacked", function(){
-      collection.add([{attacked: true}, {attacked: false}]);
-      var filtered = statusBoardView.cells();
+      turns.add([{attacked: true}, {attacked: false}]);
+      var filtered = statusBoardView.opponentTurns();
       expect(filtered.length).toEqual(1);
       expect(filtered[0].get('attacked')).toEqual(false);
     });
@@ -32,10 +34,10 @@ describe("app.Views.AttackBoardView", function(){
     statusBoardView = new app.Views.AttackBoardView({collection: collection});
   });
 
-  describe("#cells", function(){
-    it("should return cells where the opponent attacked", function(){
+  describe("#playerTurns", function(){
+    it("should return cells where the player attacked", function(){
       collection.add([{attacked: true}, {attacked: false}]);
-      var filtered = statusBoardView.cells();
+      var filtered = statusBoardView.playerTurns();
       expect(filtered.length).toEqual(1);
       expect(filtered[0].get('attacked')).toEqual(true);
     });

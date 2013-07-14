@@ -1,7 +1,28 @@
-app.Views.StatusBoardView = Backbone.View.extend({
-  el: '#status-board',
-  initialize: function() {
+app.Views.AttackBoardView = Backbone.View.extend({
+  el: '#attack-board',
+  initialize: function(){
     this.listenTo(this.collection, 'sync', this.render);
+  },
+  events:{
+    'click .cell:not(.inactive)': function(e, obj) {
+      var position = $(e.target).data('position');
+      this.attack(position);
+    }
+  },
+  attack: function(position) {
+    var self = this;
+    this.collection.create({position: position});
+  },
+  playerTurns: function() {
+    return this.collection.where({attacked:true});
+  },
+  presenter: function() {
+    var cells = _.inject(this.playerTurns(), function(memo, obj) {
+      memo[obj.get('position')] = {status:obj.get('status'), active: 'inactive'};
+      return memo;
+    },[]);
+    if (!cells[99]) cells[99] = null;
+    return {cells: cells}
   },
   render: function() {
     var presenter = this.presenter();
@@ -13,37 +34,6 @@ app.Views.StatusBoardView = Backbone.View.extend({
     });
 
     return this;
-  },
-  cells: function() {
-    return this.collection.where({attacked: false});
-  },
-  presenter: function() {
-    var cells = _.inject(this.cells(), function(memo, obj) {
-      memo[obj.get('position')] = obj.get('status');
-      return memo;
-    },[]);
-    if (!cells[99]) cells[99] = null;
-    return {cells: cells}
-  }
-});
-
-app.Views.AttackBoardView = app.Views.StatusBoardView.extend({
-  el: '#attack-board',
-  events:{
-    'click .cell:not(.inactive)': function(e, obj) {
-      var position = $(e.target).data('position');
-      this.attack(position);
-    }
-  },
-  initialize: function() {
-    app.Views.StatusBoardView.prototype.initialize.apply(this, arguments);
-  },
-  attack: function(position) {
-    var self = this;
-    this.collection.create({position: position});
-  },
-  cells: function() {
-    return this.collection.where({attacked:true});
   }
 });
 

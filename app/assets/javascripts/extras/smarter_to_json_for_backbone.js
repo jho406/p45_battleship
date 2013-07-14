@@ -1,12 +1,12 @@
 !function(Backbone){
-  var sync = Backbone.sync;
+  Backbone.oldSync = Backbone.sync;
   Backbone.sync = function( method, model, options ) {
 
     if (options.data == null && model && (method === 'create' || method === 'update' || method === 'patch')) {
       options.includeParamRoot = true;
     }
 
-    return sync.apply(this, [method, model, options]);
+    return Backbone.oldSync.apply(this, [method, model, options]);
   };
 
   _.extend(Backbone.Model.prototype, {
