@@ -7,9 +7,7 @@ $(function(){
   app.gameFormView = new app.Views.GameFormView;
   app.aresenalView = new app.Views.AresenalView({collection: app.ships});
 
-  app.ships.reset(<%=raw(
-  render :template  => 'ships/index',
-         :object    =>  Ship.all, :formats =>[:json])%>);
+  app.ships.reset(<%=raw(Rabl.render(Ship.all, 'ships/index'))%>);
 
 });
 </script>
