@@ -15,6 +15,13 @@ describe Battleship do
     double('turns', :'new'=>{}, :'create!' => turn)
   end
 
+  let(:deployment) do
+    double('deployments',
+      :positions=>[0, 1],
+      :lives=>0
+    )
+  end
+
   let(:game) do
     double("game",
       :platform_id => nil,
@@ -23,7 +30,10 @@ describe Battleship do
       :full_name => 'foo',
       :turns => turns,
       :over? => false,
-      :lose! => nil)
+      :lose! => nil,
+      :lives => 0,
+      :deployments => [deployment]
+    )
   end
 
   let(:api) do
@@ -52,8 +62,19 @@ describe Battleship do
       game.should_receive(:platform_id=)
       api.should_receive(:register)
       api.should_receive(:counter_nuke)
-
+      Battleship.should_receive(:receive_initial_nuke)
       Battleship.start(game).should eql(game)
+    end
+
+    context 'when the initial api nuke hits' do
+      before(:each){game.stub(:persisted? => false)}
+      it 'should decrement game and deployment lives' do
+        game.should_receive(:platform_id=)
+        game.should_receive(:lives=).with(-1)
+        deployment.should_receive(:lives=).with(-1)
+        turns.should_receive(:build)
+        Battleship.start(game)
+      end
     end
   end
 
@@ -61,7 +82,7 @@ describe Battleship do
     it 'should nuke via the platform api, create and return 2 turns' do
       api.should_receive(:nuke)
       turns.should_receive(:create!)
-      game.should_receive(:receive_nuke!)
+      Battleship.should_receive(:receive_nuke!)
       turns = Battleship.nuke!(game, 0)
       turns.length.should eql(2)
       turns.first.should eql(turn)

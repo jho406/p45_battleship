@@ -20,7 +20,7 @@ describe "The new game page", :js => true do
 
       click_on 'Create Game'
       expect(page).to have_selector('.cell', :count => 200)
-      expect(find_by_id('status-board')).to have_content 'miss'
+      expect(page).to have_selector '.head'
     }.to change{Game.count}.by(1)
   end
 

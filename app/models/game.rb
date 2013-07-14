@@ -26,19 +26,6 @@ class Game < ActiveRecord::Base
 
   before_create :set_initial_lives_counter
 
-
-  def receive_nuke!(index)
-    target = self.deployments.lock_on(index)
-
-    if target
-      status = target.damage_and_report!
-    else
-      status = "miss"
-    end
-
-    self.turns.create!(:position=>index, :status => status, :attacked=>false)
-  end
-
   def over?
     self.over
   end
@@ -65,7 +52,8 @@ class Game < ActiveRecord::Base
   private
 
   def set_initial_lives_counter
-    self.lives = Ship.sum(:length)
+    self.lives ||= 0
+    self.lives += Ship.sum(:length)
   end
 
   def ships_must_exist_and_be_unique

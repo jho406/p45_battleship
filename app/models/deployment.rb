@@ -18,11 +18,6 @@ class Deployment < ActiveRecord::Base
     return self
   end
 
-  def damage_and_report!
-    self.damage! #decrement the ship that got hit careful for less than zero
-    return "hit"
-  end
-
   def reset_positions
     self.positions = Battleship.expand_pos(
       :position => self.positions.first,
@@ -34,7 +29,8 @@ class Deployment < ActiveRecord::Base
   private
 
   def add_lives
-    self.lives = self.ship.length
+    self.lives||=0
+    self.lives+= self.ship.length
   end
 
   def all_positions_are_fixnum

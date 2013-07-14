@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130710192109) do
+ActiveRecord::Schema.define(:version => 20130713025552) do
 
   create_table "deployments", :force => true do |t|
     t.integer  "ship_id",     :null => false
@@ -34,6 +34,8 @@ ActiveRecord::Schema.define(:version => 20130710192109) do
     t.integer  "lives",       :default => 0,     :null => false
   end
 
+  add_index "games", ["platform_id"], :name => "index_games_on_platform_id", :unique => true
+
   create_table "ships", :force => true do |t|
     t.string   "name",       :null => false
     t.integer  "length",     :null => false
@@ -49,5 +51,7 @@ ActiveRecord::Schema.define(:version => 20130710192109) do
     t.boolean  "attacked",   :default => false,  :null => false
     t.string   "status",     :default => "miss", :null => false
   end
+
+  add_index "turns", ["game_id", "attacked", "position"], :name => "per_player_position_unique", :unique => true
 
 end
