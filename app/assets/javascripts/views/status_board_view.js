@@ -1,3 +1,4 @@
+//shows the opponents moves
 app.Views.StatusBoardView = Backbone.View.extend({
   el: '#status-board',
   cellCount: 100,

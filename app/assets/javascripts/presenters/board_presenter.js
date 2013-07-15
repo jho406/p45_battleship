@@ -1,3 +1,4 @@
+//This is the presenter used when playing a game
 app.Presenters.BoardPresenter = function(options) {
   this.cells = [];
   this.boardSize = options.boardSize || 100;
@@ -12,12 +13,14 @@ app.Presenters.BoardPresenter.prototype = {
     this.mergeTurns(turns);
     return {cells: this.cells}
   },
+  //take an array of turns and uses each position to place it across the cells array
   mergeTurns: function(turns) {
     var self = this;
     _.each(turns, function(obj) {
       self.cells[obj.position].status = obj.status;
     });
   },
+  //takes a nested array of ship positions, and assigns it across the cells
   mergeDeployments: function(deployments) {
     var self = this;
     _.each(deployments, function(ship, index) {
@@ -27,6 +30,7 @@ app.Presenters.BoardPresenter.prototype = {
       })
     });
   },
+  //used to detect if the index in the array is the Head, middle or tail
   getSegmentType: function(index, lastIndex) {
     var segmentType = 'middle';
     if (index === 0) segmentType = 'head';

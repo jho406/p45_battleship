@@ -1,11 +1,16 @@
-
+//the view on the new game page where we drop a ship and
+//auto populate the board.
 app.Views.CellView = Backbone.View.extend({
   initialize: function() {
+    //jquery ui stuff
     this.$el.droppable({ tolerance: "pointer"});
     this.render();
     this.listenTo(this.model, 'change', this.render);
   },
   events: {
+    //we want to handle event stuff in a function of its own
+    //and delegate to the actual implementation. Makes testing
+    //easier.
     "drop": function(e, obj) {
       var item = obj.draggable.data('model');
       this.attachDropped(item);

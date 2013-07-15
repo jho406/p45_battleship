@@ -1,3 +1,4 @@
+//the left half of the game play page.
 app.Views.AttackBoardView = Backbone.View.extend({
   el: '#attack-board',
   initialize: function(){

@@ -35,7 +35,6 @@ class P45
 
   def counter_nuke
     return nil unless @response
-    # resp = @response
     {:x => @response['x'], :y => @response['y']}
   end
 

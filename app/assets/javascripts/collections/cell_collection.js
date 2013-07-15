@@ -1,5 +1,9 @@
+// CellCollection. Used to place a ship on the board for the new game page
 app.Collections.CellCollection = Backbone.Collection.extend({
   model: app.Models.Cell,
+
+  //creates a mesh of linked lists across models to make detecting
+  //collision/ attaching ships easier
   meshify: function(len) {
     //Create the references
     for (var i = 0, l = this.length-1; i <= l; i++) {

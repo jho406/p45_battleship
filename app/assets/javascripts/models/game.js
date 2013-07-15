@@ -1,3 +1,4 @@
+//the main game model, there's only one of this per game.
 app.Models.Game = Backbone.Model.extend({
   urlRoot: '/api/games',
   paramRoot: 'game',
@@ -5,11 +6,13 @@ app.Models.Game = Backbone.Model.extend({
     var self = this;
     this.listenTo(this, 'change:over', this.triggerOver)
 
+    //create the child relationships
     this.turns = new app.Collections.TurnCollection({parent: this});
     this.deployments = new app.Collections.DeploymentCollection({parent: this});
 
     this.listenTo(this.turns, 'sync', this.fetchSelf);
   },
+  //we only want to fetch when 2 turns have been created.
   fetchSelf: function() {
     if (this.turns.length % 2 == 0){
       this.fetch();

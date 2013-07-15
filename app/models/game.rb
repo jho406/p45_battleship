@@ -1,5 +1,10 @@
 require 'set'
+#Game represents a board. Business logic is kept to a minimal
+#with the exception of a few helper classes. See lib/Battleship
+#for the bulk of the logic.
 
+#Hopefully with minimal massaging, I can reuse this for say..
+#Checkers or anything else with simple collision rules.
 class Game < ActiveRecord::Base
   has_many :deployments
   has_many :turns
@@ -42,6 +47,8 @@ class Game < ActiveRecord::Base
     self.save(:validate => false)
   end
 
+  #Also holds game logic of when the game is over,
+  #but is applicable to many games, so i leave this here.
   def decrement_life_cache!
     return if self.over?
     self.decrement!(:lives)
@@ -52,7 +59,7 @@ class Game < ActiveRecord::Base
   private
 
   def set_initial_lives_counter
-    self.lives ||= 0
+    self.lives ||= 0 #incase we start out with a negative, an initial nuke or move.
     self.lives += Ship.sum(:length)
   end
 

@@ -1,4 +1,6 @@
+//belongs to a ship
 app.Models.Cell = Backbone.Model.extend({
+  //contains links to other models
   siblings: {},
   defaults: {ship: null},
   //Iterates through each adjacent cell with a callback
@@ -21,6 +23,8 @@ app.Models.Cell = Backbone.Model.extend({
     }
     return foundCells;
   },
+  //Attaches an object to sibling nodes given the number of steps to go
+  //and direction
   attach: function(obj, steps, direction) {
     var cells = this.andAdjacentCells(steps, direction);
 
@@ -42,6 +46,7 @@ app.Models.Cell = Backbone.Model.extend({
     obj.trigger('attached');
     return this; //head
   },
+  //detaches the ship from itself and related siblings (depending on what the parent contains)
   detach: function() {
     if (!this.get('ship')) return;
     //todo: refactor so it doesn't need ship...

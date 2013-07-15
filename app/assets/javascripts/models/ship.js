@@ -1,3 +1,4 @@
+//represent a model of a ship to be placed on a board on the new game page.
 app.Models.Ship = Backbone.Model.extend({
   initialize: function() {
     this.cells = new app.Collections.CellCollection();

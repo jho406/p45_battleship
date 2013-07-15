@@ -29,6 +29,7 @@ app.Views.ShipView = Backbone.View.extend({
     head.detach();
     return head;
   },
+  //used to change the orientation of the dropped ship
   reorient: function() {
     var headCell = this.detach(); //to get headCell
     this.model.toggleDirection();

@@ -1,3 +1,4 @@
+//this is the view used to hold ships on the new game page
 app.Views.AresenalView = Backbone.View.extend({
   el: '#aresenal',
   initialize: function() {

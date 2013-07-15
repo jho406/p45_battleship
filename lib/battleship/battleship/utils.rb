@@ -1,4 +1,6 @@
 module Battleship
+    #A collection of helpers. Include in your application
+    #helper.
     module Utils
 
       BOARD_SIZE = 10
