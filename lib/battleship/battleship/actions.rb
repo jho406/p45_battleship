@@ -19,7 +19,10 @@ module Battleship
       #which creates a turn hit/miss # todo, add a transformer
       turns = [game.turns.create!(:position => position, :status => api.status, :attacked => true)]
 
-      return turns if game.over?
+      if api.status == 'lost'
+        game.win!
+        return turns
+      end
       #i didn't win yet, i also receive a hit
       #todo: eager load assoications via the controller
       position = coord_to_pos(api.counter_nuke)
@@ -43,6 +46,7 @@ module Battleship
     end
 
     def lock_on(game, position)
+      #todo: this could be better
       return game.deployments.lock_on(position) if game.persisted?
 
       game.deployments.to_a.find do |deployed|
