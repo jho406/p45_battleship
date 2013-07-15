@@ -1,2 +1,2 @@
-object :turn
+object @turn
 attributes :id, :position, :attacked, :status

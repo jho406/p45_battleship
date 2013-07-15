@@ -9,11 +9,12 @@ module Api
       end
 
       def create
-        @turns = Game.transaction do
+        raise ActiveRecord::RecordNotSaved, 'Game over' if current_game.over?
+
+        @turn = Game.transaction do
           Battleship.nuke!(current_game, params[:turn][:position]).first
         end
 
-        raise ActiveRecord::RecordNotSaved, 'game over' if current_game.over?
         render :show, :status => 201
       end
     end

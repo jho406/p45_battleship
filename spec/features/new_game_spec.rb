@@ -56,7 +56,7 @@ describe "The new game page", :js => true do
       end
 
       click_on 'Create Game'
-      page.find_by_id('notifications').should have_text
+      page.find('.notifications').should have_text
     end
 
     it "should show validation errors when placement-board isn't ready" do
@@ -64,7 +64,7 @@ describe "The new game page", :js => true do
       fill_in 'game_full_name', :with => 'john smith'
 
       click_on 'Create Game'
-      page.find_by_id('notifications').should have_text
+      page.find('.notifications').should have_text
     end
   end
 end

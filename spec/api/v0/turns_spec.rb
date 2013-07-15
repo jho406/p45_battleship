@@ -11,7 +11,10 @@ describe "/turns", :type => :api do
           "CONTENT_TYPE" => "application/json"
 
         response.status.should eql(201)
-        response.body.should eql("{}")
+        body = JSON.parse(response.body)
+        body['position'].should eql(0)
+        body['attacked'].should eql(true)
+
       }.to change{game.turns.count}.by(2)
     end
   end
