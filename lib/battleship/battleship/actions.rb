@@ -17,9 +17,9 @@ module Battleship
 
       api.nuke(pos_to_coord(position))
       #which creates a turn hit/miss # todo, add a transformer
-
       turns = [game.turns.create!(:position => position, :status => api.status, :attacked => true)]
 
+      return turns if game.over?
       #i didn't win yet, i also receive a hit
       #todo: eager load assoications via the controller
       position = coord_to_pos(api.counter_nuke)

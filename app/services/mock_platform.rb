@@ -20,10 +20,9 @@ class MockPlatform
     {'x' => 1, 'y' => 5, 'status' => 'hit'},
     {'x' => 1, 'y' => 6, 'status' => 'hit'},
     {'x' => 1, 'y' => 7, 'status' => 'hit'},
-    {'x' => 1, 'y' => 8, 'status' => 'hit'},
-    {'error' => 'The game with id=2425 is already over',
-     'game_status'=>'lost',
-     'prize'=>"Congratulations! Please zip and email your code to neil+priority@platform45.com"}
+    {'x' => 1, 'y' => 8, 'status' => 'hit',
+      'game_status'=>'lost', 'prize'=>"Congratulations! Please zip and email your code to neil+priority@platform45.com"},
+    {'error' => 'The game with id=2425 is already over'}
   ]
 
   attr_reader :response, :id
@@ -48,7 +47,7 @@ class MockPlatform
   end
 
   def register
-    last_id = Game.pluck(:id).last
+    last_id = Game.maximum(:id) #max
     @id = last_id ? last_id + 1 : rand(0..1000)
     @response = MOVES[0]
     return self
