@@ -78,7 +78,7 @@ form{
   background-color: #eeeeee;
 }
 
-#notifications{
+.notifications{
   height: 20px;
   color: #e74c3c;
   text-align: center;
@@ -273,4 +273,10 @@ a.handle:active {text-decoration:none; color:#2ecc71;}
 
 #status-board .head.tail.vertical{
   border-radius: 10px;
+}
+
+#error{
+  position: absolute;
+  background: red;
+  display: none;
 }

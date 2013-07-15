@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
-  # rescue_from Exception, :with => :api_error
+  rescue_from Exception, :with => :api_error
 
   def api_error
     render :nothing => true, :status => 404

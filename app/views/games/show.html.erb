@@ -19,14 +19,19 @@ $(function(){
     Rabl.render(@game.deployments, 'deployments/index')) %>
   );
 
-
   app.attackBoardView.render();
   app.statusBoardView.render();
 
   app.gameOver = new app.Views.GameOver({model: app.game});
+
+  $(document).ajaxError( function(e, xhr, options){
+   $('#error').show();
+  })
+
 });
 </script>
 <div id='container'>
+  <div id="error">An Error has occured. Try again later</div>
   <div id="attack-board">
   </div>
 

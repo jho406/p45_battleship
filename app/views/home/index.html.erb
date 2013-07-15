@@ -18,7 +18,9 @@ $(function(){
     <%= f.email_field :email, :placeholder => "example@example.org" %>
     <%= f.text_field :full_name, :placeholder => "your full name" %>
       <%=f.submit%>
-      <div id="notifications"></div>
+      <div class="notifications">
+        <%= link_to_if(Rails.env.development?, 'click to change to p45', root_path(:platform=>'p45'))%>
+      </div>
     <ul id="aresenal">
 
     </ul>
