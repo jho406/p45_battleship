@@ -5,7 +5,7 @@ class MockPlatform
 
   MOVES = [
     {'x' => 0, 'y' => 0},
-    {'x' => 0, 'y' => 1, 'status' => 'hit'},
+    {'x' => 0, 'y' => 0, 'status' => 'hit'}, #duplicate to account for p45 behavior
     {'x' => 0, 'y' => 2, 'status' => 'hit'},
     {'x' => 0, 'y' => 3, 'status' => 'hit'},
     {'x' => 0, 'y' => 4, 'status' => 'hit'},
