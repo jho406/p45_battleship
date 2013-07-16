@@ -23,7 +23,7 @@ FactoryGirl.define do
     end
 
     turns_attributes [{
-      :position => 0
+      :position => 0, :attacked=>false, :status=>'hit' #first turn will hit based on deployment positioning
     }]
   end
 
