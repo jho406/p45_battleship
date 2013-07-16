@@ -23,7 +23,18 @@ describe('app.Presenters.BoardPresenter', function() {
         {},
         {status:'hit'}
       ]);
+    });
 
+    it('should take into account duplicate tries with a x(N) string', function() {
+      var duplicateTurns = _.clone(turns);
+      duplicateTurns.push({position: 0, status: 'miss'});
+      board.mergeTurns(duplicateTurns);
+
+      expect(board.cells).toEqual([
+        {status:'miss',tries: 'x2'},
+        {},
+        {status:'hit'}
+      ]);
     });
   });
 

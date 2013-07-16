@@ -13,11 +13,15 @@ app.Presenters.BoardPresenter.prototype = {
     this.mergeTurns(turns);
     return {cells: this.cells}
   },
-  //take an array of turns and uses each position to place it across the cells array
+  //take an array of turns and uses each grouped position
+  //(its possible to have duplicates) to place it across the cells array
   mergeTurns: function(turns) {
+    var groupedTurns = _.groupBy(turns, function(turn){return turn.position})
     var self = this;
-    _.each(turns, function(obj) {
-      self.cells[obj.position].status = obj.status;
+
+    _.each(groupedTurns, function(set, key, index) {
+      self.cells[key].status = set[0].status;
+      if (set.length > 1) self.cells[key].tries = 'x'+ set.length;
     });
   },
   //takes a nested array of ship positions, and assigns it across the cells
