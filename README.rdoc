@@ -1,27 +1,29 @@
-== Me Battleship
+= Me Battleship
+A backbone/rails application you can use to play with the Platform45 battleship API. Although other battleship gaming platforms can be used if available.The bulk of the app's logic lives in lib/battleship. 
 
-A backbone/rails application was designed for a player to play with the Platform45 battleship API. Although other battleship gaming platforms can be used if available.
+By default the app uses MockPlatform in place of P45's api, where every move you make is a successful hit and the opponent predictably fires from top to bottom from left to right 18 times.
 
-The models and controllers were designed to be as slim as possible with the lib/battleship being the glue that holds everything together.
+You can switch to the P45 api by clicking 'change platforms' on the new game page (Note: this only shows up in development) or in config/intializers/game_platform.rb.
+
+Tests are written in jasmine and rspec. <tt>rake jasmine:ci</tt> and <tt>rake rspec</tt> to run.
 
 == Todo
-As the models themselves are slim, it is possible to massage them furthur to be used for other board based games (chess/checker).
+The models themselves are pretty slim, so it is possible to massage them further (rename 'ships' to 'game pieces') to be used for other simple board games (lib/chess).
 
 == Installation
 This app uses postgresql, and chromedriver 'brew install chromedriver' for testing, please install those first.
 
-1. Bundle:
-       <tt>bundle install</tt>
-2. Migrate:
-       <tt>rake db:migrate</tt>
+1. Install Postgresql, and chromedriver(for testing):
+2. Next, run bundle install:
+        bundle
+3. Create the db:
+       rake db:create
+4. Migrate
+       rake db:migrate
 3. Hop on to the development server:
-       <tt>rails s</tt>
+       rails s
 
-By default the app uses a MockPlatform, where every move you make is a successful hit and the opponent predictably fires from top to bottom from left to right 18 times.
-
-You can switch to the P45 api by clicking 'change platforms' on the new game page. Note: this only shows up in development.
-
-== Notable Rails contents
+== Ruby content
 
 app/services
   Holds all the API clients, a MockPlatform client is avaiable.
@@ -39,8 +41,7 @@ app/specs
 app/controllers/api
   Private api used by the app to create/list games, turns, deployments
 
-== Notable Javascript contents
-
+== Javascript content
 app/assets/javascripts/extras
   Contains custom Backbone library overrides and some utility functions.
 
