@@ -26,6 +26,7 @@ describe Battleship do
 
   let(:game) do
     double("game",
+      :started? => false,
       :platform_id => nil,
       :email => 'foo@foo.com',
       :full_name => 'foo',

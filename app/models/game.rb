@@ -31,6 +31,10 @@ class Game < ActiveRecord::Base
 
   before_create :set_initial_lives_counter
 
+  def started?
+    !self.platform_id.nil?
+  end
+
   def over?
     self.over
   end

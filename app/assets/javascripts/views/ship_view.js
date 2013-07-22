@@ -34,6 +34,7 @@ app.Views.ShipView = Backbone.View.extend({
     var headCell = this.detach(); //to get headCell
     this.model.toggleDirection();
     if (!headCell) return;
+
     headCell.attach(this.model,
       this.model.get('length'),
       this.model.get('direction'));
