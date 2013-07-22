@@ -3,9 +3,7 @@ app.Collections.TurnCollection = Backbone.Collection.extend({
   initialize: function(attrs) {
 
     if (attrs.parent) {
-      this.url = function(){
-        return this.parent.urlRoot + '/' + this.parent.id + '/turns'
-      };
+      this._setupUrl();
 
       this.parent = attrs.parent;
       //update itself when game changed. this usually means a hit was
@@ -24,5 +22,10 @@ app.Collections.TurnCollection = Backbone.Collection.extend({
         this.fetch();
       }
     });
+  },
+  _setupUrl: function() {
+    this.url = function(){
+      return this.parent.urlRoot + '/' + this.parent.id + '/turns'
+    };
   }
 });
