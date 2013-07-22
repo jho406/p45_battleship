@@ -1,6 +1,6 @@
 module Api
   module V0
-    class GamesController < ApplicationController
+    class GamesController < Api::V0::ApiController
       respond_to :json
 
       def create

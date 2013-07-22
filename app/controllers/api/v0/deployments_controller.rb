@@ -1,6 +1,6 @@
 module Api
   module V0
-    class DeploymentsController < ApplicationController
+    class DeploymentsController < Api::V0::ApiController
       respond_to :json
 
       def index
