@@ -3,7 +3,7 @@ module Battleship
   module Actions
     #starts the game, by calling the api.
     def start(game)
-      return game if game.platform_id
+      return game if game.started?
 
       api = self.game_platform.new({:email => game.email, :name => game.full_name})
       api.register

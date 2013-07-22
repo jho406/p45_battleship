@@ -4,10 +4,7 @@ app.Collections.DeploymentCollection = Backbone.Collection.extend({
   initialize: function(attrs) {
 
     if (attrs.parent) {
-      this.url = function(){
-        return this.parent.urlRoot + '/' + this.parent.id + '/deployments'
-      };
-
+      this._setupUrl();
       this.parent = attrs.parent;
       //update itself when game changed. this usually means a hit was
       //successful
@@ -15,6 +12,11 @@ app.Collections.DeploymentCollection = Backbone.Collection.extend({
         if(this.parent.isNew()) return;
         this.fetch();
       });
+    };
+  },
+  _setupUrl: function(){
+    this.url = function(){
+      return this.parent.urlRoot + '/' + this.parent.id + '/deployments'
     };
   }
 });

@@ -22,6 +22,7 @@ app.Views.AttackBoardView = Backbone.View.extend({
       memo[obj.get('position')] = {status:obj.get('status'), active: 'inactive'};
       return memo;
     },[]);
+
     if (!cells[99]) cells[99] = null;
     return {cells: cells}
   },
