@@ -17,7 +17,9 @@ This app uses postgresql, and chromedriver 'brew install chromedriver' for testi
        rake db:create
 4. Migrate
        rake db:migrate
-3. Hop on to the development server:
+5. Seed
+       rake db:seed
+6. Hop on to the development server:
        rails s
 
 == Ruby content
