@@ -7,9 +7,6 @@ You can switch to the P45 api by clicking 'change platforms' on the new game pag
 
 Tests are written in jasmine and rspec. <tt>rake jasmine:ci</tt> and <tt>rake rspec</tt> to run.
 
-== Todo
-The models themselves are pretty slim, so it is possible to massage them further (rename 'ships' to 'game pieces') to be used for other simple board games (lib/chess).
-
 == Installation
 This app uses postgresql, and chromedriver 'brew install chromedriver' for testing, please install those first.
 
