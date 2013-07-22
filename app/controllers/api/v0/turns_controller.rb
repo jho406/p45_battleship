@@ -1,6 +1,6 @@
 module Api
   module V0
-    class TurnsController < ApplicationController
+    class TurnsController < Api::V0::ApiController
       respond_to :json
 
       def index
