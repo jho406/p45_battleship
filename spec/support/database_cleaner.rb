@@ -15,7 +15,6 @@ RSpec.configure do |config|
 
   config.after(:each) do
     DatabaseCleaner.clean
-    MockPlatform::CACHE.clear
   end
 
 
