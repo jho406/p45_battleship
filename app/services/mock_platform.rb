@@ -1,7 +1,6 @@
 #A mock platform, use in place of P45 to provide predictable turns.
 #All attacks will 'hit'
 class MockPlatform
-  CACHE = ActiveSupport::Cache::FileStore.new('tmp/mock_platform')
 
   MOVES = [
     {'x' => 0, 'y' => 0},
