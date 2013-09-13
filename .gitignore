@@ -31,3 +31,6 @@ pickle-email-*.html
 .project
 chromedriver.log
 libpeerconnection.log
+
+# virtualboxes should be ignored
+.vagrant/
